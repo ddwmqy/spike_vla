@@ -91,6 +91,15 @@
 - dev pod(MIG 40G)实测吞吐:**~45 s/episode → 单 suite ≈ 6.3h,4 suite 串行 ≈ 25h**;算力服务器 4 卡并行 ≈ 6h 全套。
 - **统一评测入口:`/data/260010028/dwh_vla/eval_v3.sh`**(算力服务器/任意 pod 通用):自动装 libGL(新容器缺)、校验/自克隆 LIBERO checkout(共享盘 `/data/260010028/dwh_vla/LIBERO_eval`,commit 8f1084e)、默认 `EVAL_GPU_IDS=0,1,2,3` 四卡并行,可 `EVAL_GPU_IDS=0` 单卡串行、`EVAL_SUITES=` 选子集;已完成 suite 指纹缓存自动跳过。
 - dev pod 首跑残段(2026-09-08,随会话断开中断):libero_spatial 6.7/10 任务 **61.9%**(task1 0/50 异常,task2/5 100%),suite 结果 json 未落盘,重跑从零计。
+- **4 卡并行首跑事故与修复(2026-09-09)**:robosuite `renderers/context/egl_context.py` 在
+  `MUJOCO_EGL_DEVICE_ID` 未设时把 `CUDA_VISIBLE_DEVICES` 的裸数字**直接当 EGL 设备下标**,
+  而 NVIDIA EGL 枚举本身已被 CUDA_VISIBLE_DEVICES 过滤成 1 个设备 → 锁非 0 卡的进程全部
+  启动即崩(`must be an integer between 0 and 0 (inclusive), got 1`)。只有 GPU 0 的
+  libero_spatial 幸存并完整跑完:**78.2%(391/500),4h05m**;10 任务全在 42%–98%,无 0% 任务
+  (dev pod 残段的"task1 全错"确认是中断统计假象)。
+  修复:① robosuite egl_context.py 本地补丁(裸数字按可见列表翻译成局部下标;映射单测 6 例
+  全过 + dev pod 真机 EGL 初始化不回归);② run_eval.sh suite 失败时不再写指纹 sidecar。
+  两处均不进 code_fp/source_fp,spatial 缓存仍有效,重启只补跑 3 suite。
 
 ## 6. 启动命令(算力服务器,换算力后)
 

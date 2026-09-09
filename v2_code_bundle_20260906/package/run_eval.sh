@@ -206,6 +206,10 @@ run_suite() {
     --task_suite_name "$suite" \
     --result_json_path "$result" \
     "${common_args[@]}" >"$log" 2>&1
+  if (( $? != 0 )); then
+    echo "[$(date -Is)] FAIL gpu=$gpu suite=$suite (see $log)"
+    return 1
+  fi
   printf '%s' "$result_fp" > "$result_fp_file"
   echo "[$(date -Is)] DONE gpu=$gpu suite=$suite"
 }
