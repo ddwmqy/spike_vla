@@ -1,0 +1,49 @@
+# ==== 重量级产物:一律不跟踪(权重/数据/环境/输出) ====
+miniconda3/
+node_modules/
+.claude_data/
+.claude/
+LIBERO_eval/
+spike-turbovla/
+smoothspike-upstream/
+node-v*/
+node-*.tar.*
+package.json
+package-lock.json
+.claude.json
+dl_logs/
+Miniconda3-latest-*.sh
+
+# 原始 bundle 压缩包与各类归档
+*.tar.zst
+*.tar.gz
+*.tar.xz
+*.tgz
+*.zip
+
+# 数据与预训练权重(GB 级)
+v2_code_bundle_20260906/resources/pretrained/
+v2_code_bundle_20260906/resources/data/
+
+# 训练/评测输出:全部排除,唯独放行各 eval 的 summary.json(实验结论载体)
+v2_code_bundle_20260906/package/output/*
+!v2_code_bundle_20260906/package/output/eval/
+v2_code_bundle_20260906/package/output/eval/*
+!v2_code_bundle_20260906/package/output/eval/*/
+v2_code_bundle_20260906/package/output/eval/*/results/*
+!v2_code_bundle_20260906/package/output/eval/*/results/summary.json
+
+# ==== 通用噪音 ====
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.pth
+*.safetensors
+*.bin
+*.hdf5
+*.ckpt
+*.mp4
+*.log
+*.tmp
+.DS_Store

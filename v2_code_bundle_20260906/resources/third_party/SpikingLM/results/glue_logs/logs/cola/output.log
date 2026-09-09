@@ -1,0 +1,35 @@
+wandb: WARNING Config item 'per_device_train_batch_size' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'learning_rate' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'weight_decay' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'num_train_epochs' was locked by 'sweep' (ignored update).
+01/20/2026 09:13:26 - INFO - __main__ - ***** Running training *****
+01/20/2026 09:13:26 - INFO - __main__ -   Num examples = 8551
+01/20/2026 09:13:26 - INFO - __main__ -   Num Epochs = 20
+01/20/2026 09:13:26 - INFO - __main__ -   Instantaneous batch size per device = 32
+01/20/2026 09:13:26 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 32
+01/20/2026 09:13:26 - INFO - __main__ -   Gradient Accumulation steps = 1
+01/20/2026 09:13:26 - INFO - __main__ -   Total optimization steps = 5360
+  5%|▍         | 267/5360 [00:22<06:50, 12.41it/s]01/20/2026 09:13:52 - INFO - __main__ - epoch 0: {'matthews_correlation': 0.2730270820443904}
+ 10%|▉         | 535/5360 [00:48<06:26, 12.47it/s]01/20/2026 09:14:17 - INFO - __main__ - epoch 1: {'matthews_correlation': 0.3893674975379316}
+ 15%|█▍        | 803/5360 [01:13<06:19, 12.01it/s]01/20/2026 09:14:43 - INFO - __main__ - epoch 2: {'matthews_correlation': 0.42999828199112167}
+ 20%|█▉        | 1071/5360 [01:38<05:42, 12.52it/s]01/20/2026 09:15:08 - INFO - __main__ - epoch 3: {'matthews_correlation': 0.45337423753878714}
+ 25%|██▍       | 1339/5360 [02:04<05:21, 12.52it/s]01/20/2026 09:15:33 - INFO - __main__ - epoch 4: {'matthews_correlation': 0.42093440139873145}
+ 30%|██▉       | 1607/5360 [02:29<05:05, 12.29it/s]01/20/2026 09:15:59 - INFO - __main__ - epoch 5: {'matthews_correlation': 0.471551419577941}
+ 35%|███▍      | 1875/5360 [02:54<04:42, 12.33it/s]01/20/2026 09:16:24 - INFO - __main__ - epoch 6: {'matthews_correlation': 0.42798502066185135}
+ 40%|███▉      | 2143/5360 [03:19<04:17, 12.50it/s]01/20/2026 09:16:49 - INFO - __main__ - epoch 7: {'matthews_correlation': 0.41804062172932693}
+ 45%|████▍     | 2411/5360 [03:44<03:56, 12.47it/s]01/20/2026 09:17:14 - INFO - __main__ - epoch 8: {'matthews_correlation': 0.43604933998123147}
+ 50%|████▉     | 2679/5360 [04:10<03:36, 12.38it/s]01/20/2026 09:17:39 - INFO - __main__ - epoch 9: {'matthews_correlation': 0.5042571528999337}
+ 55%|█████▍    | 2947/5360 [04:35<03:14, 12.40it/s]01/20/2026 09:18:04 - INFO - __main__ - epoch 10: {'matthews_correlation': 0.4480819353905099}
+ 60%|█████▉    | 3215/5360 [05:00<02:51, 12.52it/s]01/20/2026 09:18:30 - INFO - __main__ - epoch 11: {'matthews_correlation': 0.4248816713292045}
+ 65%|██████▍   | 3483/5360 [05:25<02:39, 11.78it/s]01/20/2026 09:18:55 - INFO - __main__ - epoch 12: {'matthews_correlation': 0.435011642395176}
+ 70%|██████▉   | 3751/5360 [05:51<02:08, 12.54it/s]01/20/2026 09:19:20 - INFO - __main__ - epoch 13: {'matthews_correlation': 0.4781318341746106}
+ 75%|███████▍  | 4019/5360 [06:16<01:48, 12.39it/s]01/20/2026 09:19:45 - INFO - __main__ - epoch 14: {'matthews_correlation': 0.4690308302562507}
+ 80%|███████▉  | 4287/5360 [06:41<01:26, 12.46it/s]01/20/2026 09:20:11 - INFO - __main__ - epoch 15: {'matthews_correlation': 0.4515786297007398}
+ 85%|████████▍ | 4555/5360 [07:06<01:04, 12.44it/s]01/20/2026 09:20:36 - INFO - __main__ - epoch 16: {'matthews_correlation': 0.4757651599605677}
+ 90%|████████▉ | 4823/5360 [07:32<00:43, 12.39it/s]01/20/2026 09:21:01 - INFO - __main__ - epoch 17: {'matthews_correlation': 0.419514577867739}
+ 95%|█████████▍| 5091/5360 [07:57<00:21, 12.48it/s]01/20/2026 09:21:26 - INFO - __main__ - epoch 18: {'matthews_correlation': 0.4572856727029901}
+100%|█████████▉| 5359/5360 [08:22<00:00, 12.54it/s]01/20/2026 09:21:52 - INFO - __main__ - epoch 19: {'matthews_correlation': 0.4822936632579631}
+Configuration saved in ./glue/cola/sweep/config.json
+Model weights saved in ./glue/cola/sweep/model.safetensors
+tokenizer config file saved in ./glue/cola/sweep/tokenizer_config.json
+Special tokens file saved in ./glue/cola/sweep/special_tokens_map.json

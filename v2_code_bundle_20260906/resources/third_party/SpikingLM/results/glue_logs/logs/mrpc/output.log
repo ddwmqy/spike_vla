@@ -1,0 +1,35 @@
+wandb: WARNING Config item 'per_device_train_batch_size' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'learning_rate' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'weight_decay' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'num_train_epochs' was locked by 'sweep' (ignored update).
+01/19/2026 23:03:56 - INFO - __main__ - ***** Running training *****
+01/19/2026 23:03:56 - INFO - __main__ -   Num examples = 3668
+01/19/2026 23:03:56 - INFO - __main__ -   Num Epochs = 20
+01/19/2026 23:03:56 - INFO - __main__ -   Instantaneous batch size per device = 32
+01/19/2026 23:03:56 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 32
+01/19/2026 23:03:56 - INFO - __main__ -   Gradient Accumulation steps = 1
+01/19/2026 23:03:56 - INFO - __main__ -   Total optimization steps = 2300
+  5%|▍         | 114/2300 [00:12<03:33, 10.25it/s]01/19/2026 23:04:10 - INFO - __main__ - epoch 0: {'accuracy': 0.6985294117647058, 'f1': 0.8161434977578476}
+ 10%|▉         | 229/2300 [00:25<03:24, 10.11it/s]01/19/2026 23:04:23 - INFO - __main__ - epoch 1: {'accuracy': 0.7279411764705882, 'f1': 0.827371695178849}
+ 15%|█▌        | 345/2300 [00:38<03:13, 10.09it/s]01/19/2026 23:04:36 - INFO - __main__ - epoch 2: {'accuracy': 0.7720588235294118, 'f1': 0.841025641025641}
+ 20%|█▉        | 459/2300 [00:51<03:06,  9.89it/s]01/19/2026 23:04:49 - INFO - __main__ - epoch 3: {'accuracy': 0.7401960784313726, 'f1': 0.8354037267080745}
+ 25%|██▍       | 574/2300 [01:04<02:55,  9.83it/s]01/19/2026 23:05:02 - INFO - __main__ - epoch 4: {'accuracy': 0.7598039215686274, 'f1': 0.8382838283828382}
+ 30%|██▉       | 689/2300 [01:18<02:45,  9.74it/s]01/19/2026 23:05:15 - INFO - __main__ - epoch 5: {'accuracy': 0.7720588235294118, 'f1': 0.8477905073649754}
+ 35%|███▌      | 805/2300 [01:31<02:36,  9.52it/s]01/19/2026 23:05:28 - INFO - __main__ - epoch 6: {'accuracy': 0.7916666666666666, 'f1': 0.8542024013722128}
+ 40%|████      | 920/2300 [01:44<02:14, 10.26it/s]01/19/2026 23:05:41 - INFO - __main__ - epoch 7: {'accuracy': 0.7965686274509803, 'f1': 0.8641571194762684}
+ 45%|████▌     | 1035/2300 [01:57<02:04, 10.13it/s]01/19/2026 23:05:54 - INFO - __main__ - epoch 8: {'accuracy': 0.7916666666666666, 'f1': 0.8576214405360134}
+ 50%|█████     | 1150/2300 [02:10<01:53, 10.15it/s]01/19/2026 23:06:07 - INFO - __main__ - epoch 9: {'accuracy': 0.803921568627451, 'f1': 0.866220735785953}
+ 55%|█████▌    | 1265/2300 [02:22<01:44,  9.93it/s]01/19/2026 23:06:20 - INFO - __main__ - epoch 10: {'accuracy': 0.7941176470588235, 'f1': 0.8541666666666666}
+ 60%|█████▉    | 1379/2300 [02:35<01:32,  9.96it/s]01/19/2026 23:06:33 - INFO - __main__ - epoch 11: {'accuracy': 0.803921568627451, 'f1': 0.8666666666666666}
+ 65%|██████▌   | 1495/2300 [02:48<01:22,  9.78it/s]01/19/2026 23:06:46 - INFO - __main__ - epoch 12: {'accuracy': 0.7941176470588235, 'f1': 0.8541666666666666}
+ 70%|███████   | 1610/2300 [03:01<01:08, 10.09it/s]01/19/2026 23:06:59 - INFO - __main__ - epoch 13: {'accuracy': 0.7892156862745098, 'f1': 0.8599348534201955}
+ 75%|███████▌  | 1725/2300 [03:14<00:56, 10.15it/s]01/19/2026 23:07:12 - INFO - __main__ - epoch 14: {'accuracy': 0.8137254901960784, 'f1': 0.8680555555555555}
+ 80%|████████  | 1840/2300 [03:27<00:45, 10.11it/s]01/19/2026 23:07:25 - INFO - __main__ - epoch 15: {'accuracy': 0.7990196078431373, 'f1': 0.8655737704918033}
+ 85%|████████▌ | 1955/2300 [03:40<00:34, 10.14it/s]01/19/2026 23:07:38 - INFO - __main__ - epoch 16: {'accuracy': 0.7941176470588235, 'f1': 0.8556701030927835}
+ 90%|█████████ | 2070/2300 [03:53<00:22, 10.03it/s]01/19/2026 23:07:50 - INFO - __main__ - epoch 17: {'accuracy': 0.7818627450980392, 'f1': 0.8504201680672269}
+ 95%|█████████▌| 2185/2300 [04:06<00:11, 10.18it/s]01/19/2026 23:08:03 - INFO - __main__ - epoch 18: {'accuracy': 0.821078431372549, 'f1': 0.8785357737104825}
+100%|██████████| 2300/2300 [04:19<00:00, 10.05it/s]01/19/2026 23:08:16 - INFO - __main__ - epoch 19: {'accuracy': 0.7941176470588235, 'f1': 0.8604651162790697}
+Configuration saved in ./glue/mrpc/sweep/config.json
+Model weights saved in ./glue/mrpc/sweep/model.safetensors
+tokenizer config file saved in ./glue/mrpc/sweep/tokenizer_config.json
+Special tokens file saved in ./glue/mrpc/sweep/special_tokens_map.json

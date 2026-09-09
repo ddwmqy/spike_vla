@@ -1,0 +1,139 @@
+_wandb:
+    value:
+        cli_version: 0.24.0
+        e:
+            pv4x8hhcbiqsq1ztmf3a76tkyfzvhxg4:
+                args:
+                    - --learning_rate=2e-05
+                    - --num_train_epochs=20
+                    - --per_device_train_batch_size=32
+                    - --weight_decay=0.01
+                    - --model_name_or_path
+                    - bert-base-uncased
+                    - --task_name
+                    - sst2
+                    - --max_length
+                    - "128"
+                    - --pretrained_checkpoint
+                    - snn_full_110M
+                    - --with_tracking
+                    - --output_dir
+                    - ./glue/sst2/sweep
+                codePath: finetune_spiking.py
+                codePathLocal: finetune_spiking.py
+                cpu_count: 96
+                cpu_count_logical: 192
+                cudaVersion: "13.0"
+                disk:
+                    /:
+                        total: "7516192768000"
+                        used: "88186880"
+                email: hamingsi6@gmail.com
+                executable: /usr/bin/python
+                gpu: NVIDIA H100 80GB HBM3
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Hopper
+                      cudaCores: 16896
+                      memoryTotal: "85520809984"
+                      name: NVIDIA H100 80GB HBM3
+                      uuid: GPU-f315f356-0194-74de-204c-e3ec410bda00
+                host: pt-128ebcc7c28745f6b131cd5537eb64a7-worker-0
+                memory:
+                    total: "2159590690816"
+                os: Linux-5.14.0-284.25.1.el9_2.x86_64-x86_64-with-glibc2.35
+                program: finetune_spiking.py
+                python: CPython 3.10.12
+                root: .
+                startedAt: "2026-01-22T10:45:38.401168Z"
+                writerId: pv4x8hhcbiqsq1ztmf3a76tkyfzvhxg4
+        m: []
+        python_version: 3.10.12
+        t:
+            "1":
+                - 1
+                - 5
+                - 11
+                - 41
+                - 49
+                - 51
+                - 53
+                - 71
+                - 100
+            "2":
+                - 1
+                - 5
+                - 11
+                - 41
+                - 49
+                - 51
+                - 53
+                - 71
+                - 100
+            "3":
+                - 2
+                - 14
+                - 61
+            "4": 3.10.12
+            "5": 0.24.0
+            "6": 4.57.0
+            "12": 0.24.0
+            "13": linux-x86_64
+T:
+    value: 4
+checkpointing_steps:
+    value: null
+gradient_accumulation_steps:
+    value: 1
+hub_model_id:
+    value: null
+hub_token:
+    value: null
+ignore_mismatched_sizes:
+    value: false
+learning_rate:
+    value: 2e-05
+lr_scheduler_type:
+    value: linear
+max_length:
+    value: 128
+max_train_steps:
+    value: 42100
+model_name_or_path:
+    value: bert-base-uncased
+num_train_epochs:
+    value: 20
+num_warmup_steps:
+    value: 0
+output_dir:
+    value: ./glue/sst2/sweep
+pad_to_max_length:
+    value: false
+per_device_eval_batch_size:
+    value: 8
+per_device_train_batch_size:
+    value: 32
+pretrained_checkpoint:
+    value: snn_full_110M
+push_to_hub:
+    value: false
+report_to:
+    value: all
+resume_from_checkpoint:
+    value: null
+seed:
+    value: null
+task_name:
+    value: sst2
+train_file:
+    value: null
+trust_remote_code:
+    value: false
+use_slow_tokenizer:
+    value: false
+validation_file:
+    value: null
+weight_decay:
+    value: 0.01
+with_tracking:
+    value: true

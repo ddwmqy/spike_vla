@@ -1,0 +1,35 @@
+wandb: WARNING Config item 'per_device_train_batch_size' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'learning_rate' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'weight_decay' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'num_train_epochs' was locked by 'sweep' (ignored update).
+01/22/2026 14:08:29 - INFO - __main__ - ***** Running training *****
+01/22/2026 14:08:29 - INFO - __main__ -   Num examples = 5749
+01/22/2026 14:08:29 - INFO - __main__ -   Num Epochs = 20
+01/22/2026 14:08:29 - INFO - __main__ -   Instantaneous batch size per device = 32
+01/22/2026 14:08:29 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 32
+01/22/2026 14:08:29 - INFO - __main__ -   Gradient Accumulation steps = 1
+01/22/2026 14:08:29 - INFO - __main__ -   Total optimization steps = 3600
+  5%|▍         | 179/3600 [00:17<05:03, 11.28it/s]01/22/2026 14:08:52 - INFO - __main__ - epoch 0: {'pearson': 0.7470103460140045, 'spearmanr': 0.7412476585708665}
+ 10%|▉         | 359/3600 [00:39<04:54, 11.02it/s]01/22/2026 14:09:13 - INFO - __main__ - epoch 1: {'pearson': 0.8033421146302244, 'spearmanr': 0.8033780270152456}
+ 15%|█▍        | 539/3600 [01:01<04:48, 10.59it/s]01/22/2026 14:09:35 - INFO - __main__ - epoch 2: {'pearson': 0.8089329311514648, 'spearmanr': 0.8088651375586475}
+ 20%|██        | 720/3600 [01:22<04:42, 10.21it/s]01/22/2026 14:09:57 - INFO - __main__ - epoch 3: {'pearson': 0.8093938276613446, 'spearmanr': 0.8073693215810794}
+ 25%|██▍       | 899/3600 [01:44<04:04, 11.06it/s]01/22/2026 14:10:18 - INFO - __main__ - epoch 4: {'pearson': 0.819489459784649, 'spearmanr': 0.8178815886128398}
+ 30%|██▉       | 1079/3600 [02:06<03:54, 10.73it/s]01/22/2026 14:10:40 - INFO - __main__ - epoch 5: {'pearson': 0.8251854305373815, 'spearmanr': 0.8239316034587983}
+ 35%|███▌      | 1260/3600 [02:27<03:38, 10.73it/s]01/22/2026 14:11:01 - INFO - __main__ - epoch 6: {'pearson': 0.8195912452349038, 'spearmanr': 0.8200929299945957}
+ 40%|████      | 1440/3600 [02:49<03:12, 11.21it/s]01/22/2026 14:11:23 - INFO - __main__ - epoch 7: {'pearson': 0.8126082858497383, 'spearmanr': 0.812844264856309}
+ 45%|████▍     | 1619/3600 [03:11<02:57, 11.15it/s]01/22/2026 14:11:45 - INFO - __main__ - epoch 8: {'pearson': 0.8082215772673609, 'spearmanr': 0.8092842890930877}
+ 50%|████▉     | 1799/3600 [03:32<02:53, 10.36it/s]01/22/2026 14:12:06 - INFO - __main__ - epoch 9: {'pearson': 0.815445881941872, 'spearmanr': 0.812151072207727}
+ 55%|█████▌    | 1980/3600 [03:54<02:26, 11.06it/s]01/22/2026 14:12:28 - INFO - __main__ - epoch 10: {'pearson': 0.811382074053873, 'spearmanr': 0.8077886332579786}
+ 60%|██████    | 2160/3600 [04:16<02:07, 11.27it/s]01/22/2026 14:12:50 - INFO - __main__ - epoch 11: {'pearson': 0.8067671833778077, 'spearmanr': 0.8037240699583722}
+ 65%|██████▍   | 2339/3600 [04:37<01:54, 11.04it/s]01/22/2026 14:13:11 - INFO - __main__ - epoch 12: {'pearson': 0.8130889000571958, 'spearmanr': 0.8104267204854585}
+ 70%|██████▉   | 2519/3600 [04:59<01:39, 10.87it/s]01/22/2026 14:13:33 - INFO - __main__ - epoch 13: {'pearson': 0.811326452800247, 'spearmanr': 0.8080253238125699}
+ 75%|███████▌  | 2700/3600 [05:21<01:23, 10.84it/s]01/22/2026 14:13:55 - INFO - __main__ - epoch 14: {'pearson': 0.8055793315647389, 'spearmanr': 0.8015929937564922}
+ 80%|████████  | 2880/3600 [05:42<01:05, 10.98it/s]01/22/2026 14:14:16 - INFO - __main__ - epoch 15: {'pearson': 0.80996544770894, 'spearmanr': 0.8058644379816032}
+ 85%|████████▍ | 3059/3600 [06:04<00:47, 11.30it/s]01/22/2026 14:14:38 - INFO - __main__ - epoch 16: {'pearson': 0.8125334891034378, 'spearmanr': 0.809595693222305}
+ 90%|████████▉ | 3239/3600 [06:25<00:32, 11.18it/s]01/22/2026 14:14:59 - INFO - __main__ - epoch 17: {'pearson': 0.8047197806081977, 'spearmanr': 0.8022693750055869}
+ 95%|█████████▌| 3420/3600 [06:47<00:16, 11.02it/s]01/22/2026 14:15:21 - INFO - __main__ - epoch 18: {'pearson': 0.807161379209326, 'spearmanr': 0.805681658496197}
+100%|██████████| 3600/3600 [07:08<00:00, 10.59it/s]01/22/2026 14:15:42 - INFO - __main__ - epoch 19: {'pearson': 0.8111600575948524, 'spearmanr': 0.8085306248725782}
+Configuration saved in ./glue/stsb/sweep/config.json
+Model weights saved in ./glue/stsb/sweep/model.safetensors
+tokenizer config file saved in ./glue/stsb/sweep/tokenizer_config.json
+Special tokens file saved in ./glue/stsb/sweep/special_tokens_map.json

@@ -1,0 +1,76 @@
+{
+  "model": "Ours",
+  "time_steps": 4,
+  "energy_mJ": 5.79,
+  "average_including_mnli_m_and_mm": 77.06317734722697,
+  "tasks": {
+    "mnli": {
+      "run": "run-20260125_035413-k1bs2vb5",
+      "score": 75.80234335201222,
+      "mm": 75.97640358014645,
+      "metric": "accuracy",
+      "epoch": 6,
+      "weight": "glue/mnli/sweep",
+      "log_dir": "results/glue_logs/logs/mnli"
+    },
+    "qqp": {
+      "run": "run-20260125_001636-xga5ba87",
+      "score": 84.67801134467801,
+      "metric": "f1",
+      "epoch": 8,
+      "weight": "glue/qqp/sweep",
+      "log_dir": "results/glue_logs/logs/qqp"
+    },
+    "qnli": {
+      "run": "run-20260122_065331-e8fr3as5",
+      "score": 84.56891817682592,
+      "metric": "accuracy",
+      "epoch": 9,
+      "weight": "glue/qnli",
+      "log_dir": "results/glue_logs/logs/qnli"
+    },
+    "sst2": {
+      "run": "run-20260122_104538-ehf49nyt",
+      "score": 90.13761467889908,
+      "metric": "accuracy",
+      "epoch": 5,
+      "weight": "glue/sst2/sweep",
+      "log_dir": "results/glue_logs/logs/sst2"
+    },
+    "cola": {
+      "run": "run-20260120_091321-dyhr1x78",
+      "score": 50.42571528999337,
+      "metric": "matthews_correlation",
+      "epoch": 9,
+      "weight": "glue/cola/sweep",
+      "log_dir": "results/glue_logs/logs/cola"
+    },
+    "stsb": {
+      "run": "run-20260122_140824-dw1hw6hm",
+      "score": 82.39316034587983,
+      "pearson": 82.51854305373816,
+      "metric": "spearmanr",
+      "epoch": 5,
+      "weight": "glue/stsb/sweep",
+      "log_dir": "results/glue_logs/logs/stsb"
+    },
+    "mrpc": {
+      "run": "run-20260119_230352-4f4ycuc7",
+      "score": 87.85357737104825,
+      "acc": 82.1078431372549,
+      "metric": "f1",
+      "epoch": 18,
+      "weight": "glue/mrpc/sweep",
+      "log_dir": "results/glue_logs/logs/mrpc"
+    },
+    "rte": {
+      "run": "run-20260121_082922-j2nmlgrw",
+      "score": 61.73285198555957,
+      "metric": "accuracy",
+      "epoch": 11,
+      "weight": "glue/mrpc/sweep",
+      "log_dir": "results/glue_logs/logs/rte"
+    }
+  },
+  "note": "Scores are selected from wandb output.log best epoch per task. Public logs are included under results/glue_logs/logs. Model weights are not included in this code repository."
+}

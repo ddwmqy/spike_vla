@@ -1,0 +1,26 @@
+wandb: WARNING Config item 'per_device_train_batch_size' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'learning_rate' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'weight_decay' was locked by 'sweep' (ignored update).
+wandb: WARNING Config item 'num_train_epochs' was locked by 'sweep' (ignored update).
+01/25/2026 03:54:17 - INFO - __main__ - ***** Running training *****
+01/25/2026 03:54:17 - INFO - __main__ -   Num examples = 392702
+01/25/2026 03:54:17 - INFO - __main__ -   Num Epochs = 10
+01/25/2026 03:54:17 - INFO - __main__ -   Instantaneous batch size per device = 32
+01/25/2026 03:54:17 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 32
+01/25/2026 03:54:17 - INFO - __main__ -   Gradient Accumulation steps = 1
+01/25/2026 03:54:17 - INFO - __main__ -   Total optimization steps = 122720
+ 10%|█         | 12272/122720 [21:36<3:36:44,  8.49it/s]01/25/2026 04:16:27 - INFO - __main__ - epoch 0: {'accuracy': 0.6916963830871116}
+ 20%|█▉        | 24543/122720 [43:45<3:01:32,  9.01it/s]01/25/2026 04:38:36 - INFO - __main__ - epoch 1: {'accuracy': 0.7224656138563423}
+ 30%|███       | 36816/122720 [1:05:58<2:36:11,  9.17it/s]01/25/2026 05:00:50 - INFO - __main__ - epoch 2: {'accuracy': 0.7415180845644421}
+ 40%|████      | 49088/122720 [1:28:16<2:05:41,  9.76it/s]01/25/2026 05:23:08 - INFO - __main__ - epoch 3: {'accuracy': 0.7515028018339277}
+ 50%|█████     | 61360/122720 [1:50:29<1:50:16,  9.27it/s]01/25/2026 05:45:20 - INFO - __main__ - epoch 4: {'accuracy': 0.7525216505348956}
+ 60%|██████    | 73632/122720 [2:12:45<1:27:07,  9.39it/s]01/25/2026 06:07:36 - INFO - __main__ - epoch 5: {'accuracy': 0.7545593479368313}
+ 70%|███████   | 85904/122720 [2:34:56<1:04:42,  9.48it/s]01/25/2026 06:29:47 - INFO - __main__ - epoch 6: {'accuracy': 0.7580234335201222}
+ 80%|███████▉  | 98175/122720 [2:57:08<41:56,  9.75it/s]01/25/2026 06:51:59 - INFO - __main__ - epoch 7: {'accuracy': 0.7538461538461538}
+ 90%|████████▉ | 110447/122720 [3:19:24<21:33,  9.49it/s]01/25/2026 07:14:15 - INFO - __main__ - epoch 8: {'accuracy': 0.7576158940397351}
+100%|██████████| 122720/122720 [3:41:35<00:00,  9.19it/s]01/25/2026 07:36:26 - INFO - __main__ - epoch 9: {'accuracy': 0.7521141110545084}
+Configuration saved in ./glue/mnli/sweep/config.json
+Model weights saved in ./glue/mnli/sweep/model.safetensors
+tokenizer config file saved in ./glue/mnli/sweep/tokenizer_config.json
+Special tokens file saved in ./glue/mnli/sweep/special_tokens_map.json
+01/25/2026 07:37:11 - INFO - __main__ - mnli-mm: {'accuracy': 0.7597640358014646}

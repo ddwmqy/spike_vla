@@ -1,0 +1,11 @@
+accelerate>=0.28.0
+datasets>=2.14.0
+evaluate>=0.4.0
+huggingface-hub>=0.20.0
+numpy
+safetensors
+scikit-learn
+spikingjelly
+torch
+tqdm
+transformers>=4.57.0
