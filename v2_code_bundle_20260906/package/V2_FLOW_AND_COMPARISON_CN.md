@@ -70,6 +70,10 @@
   `ema_model_state_dict`)。
 - 处理:官方发布实测**无 EMA**(顶层仅 `model_state_dict` + `model_config`)→ **锚点 = raw 定案**
   (`run_eval_official.sh` WEIGHT_SOURCE 默认 model;对无 EMA 的发布请求 ema 会被转换器拒绝)。
+  **2026-09-10 上游时间线复核加固**:官方仓库(H-EmbodVis/TurboVLA)07-28 初版 eval 代码
+  即加载 `model_state_dict`,发布(07-30/31)时点未变——发布包 = **raw 口径**自洽;
+  EMA-only(`policy.py` 明文拒用 raw)是 **09-02 提交 ced2b0c** 才改的,同提交把 released
+  recipe 全局 batch 256→128。即:官方作者 09-02 起自己也转向 EMA 评测(早于我们 5 周)。
   v2 侧 `run_eval.sh` 新增 `WEIGHT_SOURCE=raw|ema` 开关(默认 ema;导出键、输出目录命名、
   summary 权重源均随之切换;ema 请求遇无 EMA 的 ckpt 干净报错,不静默回退;单元测试通过)。
 - **主对比规则:raw↔raw(锚点 raw + `run_eval.sh WEIGHT_SOURCE=raw`)。**
