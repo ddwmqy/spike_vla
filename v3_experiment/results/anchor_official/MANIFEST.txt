@@ -1,0 +1,34 @@
+amax
+2026-09-10T08:26:53+08:00
+PKG = /home/dwh/work/vla/libero_vla/libero_sdtv3_bert_snnfusion_20260831
+anchor eval dir = /home/dwh/work/vla/libero_vla/libero_sdtv3_bert_snnfusion_20260831/output/eval/official_clean_8f1084e
+total 44
+drwxrwxr-x 2 dwh dwh 4096  9月  7 01:32 .
+drwxrwxr-x 7 dwh dwh 4096  9月  5 19:47 ..
+-rw-rw-r-- 1 dwh dwh 2590  9月  7 01:32 libero_10.json
+-rw-rw-r-- 1 dwh dwh  231  9月  7 01:32 libero_10.json.fp
+-rw-rw-r-- 1 dwh dwh 2294  9月  6 02:15 libero_goal.json
+-rw-rw-r-- 1 dwh dwh  231  9月  6 02:15 libero_goal.json.fp
+-rw-rw-r-- 1 dwh dwh 2466  9月  6 00:49 libero_object.json
+-rw-rw-r-- 1 dwh dwh  231  9月  6 00:49 libero_object.json.fp
+-rw-rw-r-- 1 dwh dwh 2675  9月  6 02:55 libero_spatial.json
+-rw-rw-r-- 1 dwh dwh  231  9月  6 02:55 libero_spatial.json.fp
+-rw-rw-r-- 1 dwh dwh  371  9月  7 01:32 summary.json
+== v2 产物登记(不复制 ckpt)==
+total 1039020
+drwxrwxr-x 2 dwh dwh       4096 2026-09-05 21:49 .
+drwxrwxr-x 4 dwh dwh       4096 2026-09-05 15:13 ..
+-rw-rw-r-- 1 dwh dwh 1063940628 2026-09-05 21:49 turbovla_v2_smoke_2000.pth
+total 500
+drwxrwxr-x 2 dwh dwh   4096 2026-09-05 21:00 .
+drwxrwxr-x 4 dwh dwh   4096 2026-09-05 15:13 ..
+-rw-rw-r-- 1 dwh dwh  16322 2026-09-05 20:55 train_v2_1gpu_20260905_205455.log
+-rw-rw-r-- 1 dwh dwh 483083 2026-09-05 21:49 train_v2_1gpu_20260905_210008.log
+== output/eval/ 与 results/ 全目录 ==
+total 12
+drwxrwxr-x 3 dwh dwh 4096  9月  5 19:47 .
+drwxrwxr-x 5 dwh dwh 4096  9月  5 19:47 ..
+drwxrwxr-x 7 dwh dwh 4096  9月  5 19:47 official_clean_8f1084e
+ls: cannot access '/home/dwh/work/vla/libero_vla/libero_sdtv3_bert_snnfusion_20260831/results/': No such file or directory
+== 历史 snnve 80k ==
+ls: cannot access '/home/dwh/work/vla/libero_vla/libero_sdtv3_bert_snnfusion_20260831/results/libero_sdtv3_spikinglm_80k_ema_clean_8f1084e/checkpoints/': No such file or directory
