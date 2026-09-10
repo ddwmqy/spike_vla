@@ -1,0 +1,45 @@
+=== v2/v3 asset locate manifest (READ-ONLY) ===
+host: pt-ef326e281aff4bf2b27a5ec47eb8de31-worker-0  date: 2026-09-09T15:38:03+00:00
+search roots: /home /root /data /mnt /workspace /tmp
+
+=== [1] checkpoints: turbovla_*.pth ===
+-rw-r--r-- 1 11192 11192 1063955779 2026-09-06 17:01 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/debug_smoke/checkpoints/turbovla_v2_snnfusion_100.pth
+-rw-r--r-- 1 11192 11192 1063955779 2026-09-06 17:11 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/debug_smoke/checkpoints/turbovla_v2_snnfusion_200.pth
+-rw-r--r-- 1 11192 11192 1066207794 2026-09-07 13:51 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3_smoke/checkpoints/turbovla_v3_smoke_30.pth
+-rw-r--r-- 1 11192 11192 1066237444 2026-09-07 15:04 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_5000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 15:53 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_10000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 16:42 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_15000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 17:31 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_20000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 18:21 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_25000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 19:10 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_30000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 19:59 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_35000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 20:48 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_40000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 21:38 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_45000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 22:27 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_50000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-07 23:16 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_55000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-08 00:04 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_60000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-08 00:53 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_65000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-08 01:42 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_70000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-08 02:32 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_75000.pth
+-rw-r--r-- 1 11192 11192 1066242375 2026-09-08 03:22 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3/checkpoints/turbovla_v3_sootspike_80000.pth
+
+=== [2] train_v2 / train_v3 directories ===
+drwxr-xr-x 4 11192 11192 4096 Sep  7 09:11 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v2
+drwxr-xr-x 4 11192 11192 4096 Sep  7 14:06 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v3
+
+=== [3] existing eval outputs: summary.json / suite json under *eval* ===
+-rw-r--r-- 1 11190 11190 75130 2026-09-07 17:41 /data/260010026/projects/mega-main/nanoMEGA/docs/research/zero_grad_final_review_20260907/evaluation/summary.json
+-rw-r--r-- 1 11192 11192 520 2026-09-09 14:51 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/eval/v3_sootspike_step_80000_raw_clean_8f1084e/results/summary.json
+
+=== [4] official anchor eval output dir (official_clean_8f1084e) — per-task json needed ===
+-rw-r--r-- 1 11192 11192 4366 2026-09-09 11:39 /data/260010028/dwh_vla/TurboVLA_official/experiments/libero/configs/libero_all4_stats.json
+
+=== [5] v2 launch/training logs (launch_v2*, nohup, train_v2/logs) ===
+-rw-r--r-- 1 11192 11192 254933 2026-09-07 09:43 /data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/train_v2/logs/train_v2_4gpu_20260907_091143.log
+
+=== [6] training configs near checkpoints (config.yaml / dataset_statistics.json / *.yaml) ===
+/data/260010028/dwh_vla/v2_code_bundle_20260906/package/output/eval/v3_sootspike_step_80000_raw_clean_8f1084e/libero_config/config.yaml
+/data/260010028/dwh_vla/v2_code_bundle_20260906/resources/pretrained/TurboVLA/config.yaml
+/data/260010028/dwh_vla/v2_code_bundle_20260906/resources/pretrained/TurboVLA/dataset_statistics.json
+
+=== end of manifest ===

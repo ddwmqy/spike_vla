@@ -1,0 +1,5 @@
+assets: /data/260010028/dwh_vla/LIBERO_eval/libero/libero/assets
+bddl_files: /data/260010028/dwh_vla/LIBERO_eval/libero/libero/bddl_files
+benchmark_root: /data/260010028/dwh_vla/LIBERO_eval/libero/libero
+datasets: /data/260010028/dwh_vla/LIBERO_eval/libero/datasets
+init_states: /data/260010028/dwh_vla/LIBERO_eval/libero/libero/init_files

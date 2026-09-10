@@ -1,0 +1,20 @@
+=== v2/v3 asset locate manifest (READ-ONLY) ===
+host: pt-d2bfb15fa78c49dcb0078376ebc4c588-worker-0  date: 2026-09-09T16:04:33+00:00
+search roots: /home/dwh/work/vla /home/dwh
+
+=== [1] checkpoints: turbovla_*.pth ===
+
+=== [2] train_v2 / train_v3 directories ===
+
+=== [3] existing eval outputs: summary.json / suite json under *eval* ===
+
+=== [4] official anchor eval output dir (official_clean_8f1084e) — per-task json needed ===
+
+=== [5] v2 launch/training logs (launch_v2*, nohup, train_v2/logs) ===
+
+=== [6.5] original v2-era workspace: libero_sdtv3_bert_snnfusion_20260831 (dir may sit on a mount find -xdev skips) ===
+[miss] libero_sdtv3_bert_snnfusion_20260831 not under /home/dwh/work/vla/libero_vla nor within maxdepth 5 of roots: /home/dwh/work/vla /home/dwh /home/dwh
+
+=== [7] training configs near checkpoints (config.yaml / dataset_statistics.json / *.yaml) ===
+
+=== end of manifest ===

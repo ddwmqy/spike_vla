@@ -1,0 +1,13 @@
+{
+  "model": "Official TurboVLA LIBERO (DINOv3 ViT-B + BERT + ANN fusion)",
+  "libero_commit": "8f1084e3132a39270c3a13ebe37270a43ece2a01",
+  "weight_source": "model_state_dict",
+  "precision": "fp32",
+  "seed": 7,
+  "num_trials_per_task": 50,
+  "chunk_size": 12,
+  "num_open_loop_steps": 12,
+  "total_successes": 1854,
+  "total_episodes": 2000,
+  "success_rate": 0.927
+}

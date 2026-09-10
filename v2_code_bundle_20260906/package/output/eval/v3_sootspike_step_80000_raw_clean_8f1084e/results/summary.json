@@ -1,0 +1,21 @@
+{
+  "model": "libero_sdtv3_sootspike_snnfusion_20260907",
+  "suites": [
+    "libero_spatial",
+    "libero_object",
+    "libero_goal",
+    "libero_10"
+  ],
+  "checkpoint_step": 80000,
+  "weight_source": "raw",
+  "training_loss_at_checkpoint": 0.13238519430160522,
+  "libero_commit": "8f1084e3132a39270c3a13ebe37270a43ece2a01",
+  "precision": "fp32",
+  "seed": 7,
+  "num_trials_per_task": 50,
+  "chunk_size": 12,
+  "num_open_loop_steps": 12,
+  "total_successes": 1629,
+  "total_episodes": 2000,
+  "success_rate": 0.8145
+}

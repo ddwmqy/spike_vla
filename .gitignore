@@ -3,6 +3,8 @@ miniconda3/
 node_modules/
 .claude_data/
 .claude/
+.codex_data/
+codex.sh
 LIBERO_eval/
 spike-turbovla/
 smoothspike-upstream/
@@ -48,3 +50,4 @@ __pycache__/
 *.tmp
 .DS_Store
 ssh_github/
+TurboVLA_official/
