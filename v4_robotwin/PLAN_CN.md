@@ -1,19 +1,30 @@
-# v4-robotwin 任务规划 v6:RoboTwin 2.0 clean50 对标 TurboVLA
+# v4-robotwin 任务规划 v7:RoboTwin 2.0 clean50 对标 TurboVLA
 
-> **状态:规划稿 v6(2026-09-09,已收敛,作为实施依据),未经确认不执行任何下载/训练/评测。**
-> v6 补第五轮 3 小点:1k 短跑验证改用缩短 save/eval 间隔的专用配置并跨过触发点、warmup
-> 检查跨过第 1000 个 optimizer step;文本投影"重初始化"与"校准"同为须声明的干预;
-> §5.3 交叉引用改为本节第 4 项指标。v5 吸收第四轮 5 处修正 + 2 处措辞:精度参考配置改为两级(高精度参考 / 自身训练配置参考,
-> 官方默认降为候选)、跨精度动作比较限定在固定输入批(rollout 只比成功率与轨迹)、夹爪
-> 双口径指标(0.49 原始 + ensemble 后 0.5 终值)、快照时机与来源(C1 step-0、预加载后)、
-> 两臂统一 micro-batch+accum 档位、"实测组合"措辞更正、optimizer.step() 空操作澄清。
+> **状态:规划稿 v7(2026-09-11)。v6 全部机制条款(§1–§5.6、§6)原样继承,本轮只做四件事:**
+> ① **主线改三段式**——依据用户 2026-09-11 指令"用 v3 架构(=A)跑 RoboTwin 试试",
+>   A 的 1k 冒烟(A-S)前置去风险,C1∥B 仍为科学结论主体,A 是否 55k 正式视 B 结论拍板;
+> ② 新增 **§5.7 方案 A 接入提纲**(移植单元 + 验证门 + 待拍板项)与 **§4-P0A / §4-A-S** 阶段;
+> ③ 新增 **§5.8 C1-vs-B 判定规则(预注册)**;
+> ④ §7 补**总预算表**;资产事实修正:RoboTwin 2.0 模拟器仓库 = **robotwin-Platform/RoboTwin**
+>   (TianxingChen/RoboTwin 是 v1 落地页,主分支仅 README),官方 55k EMA ckpt 已落地
+>   `v4_assets/`——进度明细见 `ASSETS.md`。
+> v6 历史(机制未变):1k 短跑专用配置跨触发点、warmup 跨第 1000 个 optimizer step、
+> 文本投影"重初始化"与"校准"同为须声明的干预;两级精度参考(高精度参考 / 自身训练配置参考,
+> 官方默认降为候选)、跨精度动作比较限定在固定输入批、夹爪双口径指标、快照时机与来源、
+> 两臂统一 micro-batch+accum 档位、optimizer.step() 空操作澄清。
 > 官方参考代码:`/data/260010028/dwh_vla/TurboVLA_official`,commit **b29ab14**(2026-09-02)。
 
 ## 0. 一句话目标
 
-在 RoboTwin 2.0 clean50(50 个双臂任务)上,以**成对重训对照**回答"文本 spike 化在双臂
-基准上是否成立":C1(ANN BERT 干净重训)与 B(sootspike 文本)同 seed、同数据、同全局
-batch、同步数、同评测协议各训一次、各评一次,与官方发布 60.2% 对比。
+在 RoboTwin 2.0 clean50(50 个双臂任务)上回答两个问题:
+
+1. **主问题(成对重训对照)**:C1(ANN BERT 干净重训)与 B(sootspike 文本)同 seed、
+   同数据、同全局 batch、同步数、同评测协议各训一次、各评一次,与官方发布 60.2% 对比
+   ——检验"文本 spike 化在双臂基准上是否成立"(判定规则预注册于 §5.8,评测开始前不得更改)。
+2. **前置去风险(2026-09-11 新增)**:A(=v3 三组件 spike 架构:SDT-V3 视觉 + sootspike
+   文本 + Spike2Max 融合)先做 **1k 短训冒烟(A-S)**,把计划自标的最大风险——"spike 组件
+   从未在双臂/3 视图/SAPIEN 上验证过"——最先排掉;A 是否投入 55k 正式训练,视 B 结论与
+   算力再拍(§4)。
 
 ## 1. 官方基准口径(含工程事实)
 
@@ -57,6 +68,7 @@ batch、同步数、同评测协议各训一次、各评一次,与官方发布 6
 | 视觉骨干 | SDT-V3 SNN(v3)/ ViT-B(官方 LIBERO) | ViT-L 参与训练 | 权重不通用 |
 | 精度 | 三层语义同样适用,取值组合以 FP32 为主 | 三层取值组合不同(§1.2),官方 FP32 参数 + BF16 autocast | SmoothSpike 精度敏感 → §5.3 |
 | 模型构建路径 | 本包 trainer 直构 | **starVLA wrapper `_core_config` 硬编码 BERT**(`VLM4A/TurboVLA.py:116`) | §5.1 |
+| 数据管道 | LIBERO RLDS(`libero_rlds.py`) | **LeRobot/parquet**(starVLA runtime) | spike 模块输入衔接(分辨率/文本长度/padding)→ §5.7 验证门 |
 | 模拟器 | MuJoCo | SAPIEN(独立 env) | 全新评测栈 |
 | spike 组件验证 | LIBERO 真卡验证 + 80k 训练 | **从未验证** | 核心风险 |
 
@@ -68,18 +80,34 @@ batch、同步数、同评测协议各训一次、各评一次,与官方发布 6
 | **C0-common**(可选) | 同 ckpt,改用 C1/B 统一选定精度 | 仅当矩阵选中精度 ≠ 官方默认时另跑;评测量另计 |
 | **C1** | ANN BERT 干净重训(修正版 trainer,seed 42,全局 192,55k) | B 的单变量训练对照 |
 | **B** | 官方架构 + 文本→sootspike(frozen),其余与 C1 逐项相同 | 单变量 = 文本;§5 |
-| **A** | **三组件 spike(混合 SNN-ANN)**,模块边界按我方代码:SDT-V3 SNN 视觉 + sootspike 文本(含 **SpikeLinearProjection**,turbovla.py:118)+ Spike2Max 融合(**SpikeFFNResidual 带 LIF**,spiking.py:735);ANN 保留 = ACT 动作头等 | 占位,**接入/初始化/退出标准后续另拟方案** |
+| **A** | **三组件 spike(混合 SNN-ANN)**,模块边界按我方代码:SDT-V3 SNN 视觉 + sootspike 文本(含 **SpikeLinearProjection**,turbovla.py:118)+ Spike2Max 融合(**SpikeFFNResidual 带 LIF**,spiking.py:735);ANN 保留 = ACT 动作头等 | 接入提纲见 §5.7;是否 55k 正式视 B 结论与算力拍板 |
+| **A-S** | A 架构 1k 短训冒烟(§5.4 修正版 trainer,seed 42) | 只回答"能否训、数值是否健康、ckpt/EMA 能否落盘";**数字不作结论、不进对照表** |
 
-**主线:P0E → C0-20 → C0-100(official)→ P0T → C1 ∥ B 成对训练 → 统一协议评测 → 视 B 结论另拟 A。**
+**主线(v7 三段式):P0E → [P0A 移植 ∥ C0-20 → C0-100(official)] → P0T → A-S 冒烟 → C1 ∥ B 成对训练 → 统一协议评测 → 视 B 结论拍 A 是否 55k 正式。**
 
 ## 4. 阶段分解
 
 ### P0E 评测环境与 C0 全部资产
 1. `turbovla-robotwin` env(python 3.10,`pip install -e ".[robotwin]"`)+ **FlashAttention-2 另装**;RoboTwin 2.0 SAPIEN env(镜像克隆)
 2. **C0 资产**:官方 55k ckpt(`config.yaml`+`dataset_statistics.json` 祖先结构)、DINOv3 ViT-L、bert-base-uncased、GroundingDINO、tokenizer/processor 全部就位
-3. 钉版本:TurboVLA=b29ab14、RoboTwin=克隆 commit、SmoothSpike 源码/权重 sha256 → `ASSETS.md`
+3. 钉版本:TurboVLA=b29ab14、RoboTwin=`96c1fea`(robotwin-Platform/RoboTwin,已克隆)、SmoothSpike 源码/权重 sha256 → `ASSETS.md`
 4. 最小 sim 冒烟:官方 ckpt × 1 任务 × 5 episodes;`--use_bf16` 开/关各跑通
 5. **退出标准**:冒烟通过;资产/版本记录完整。
+
+**进度(2026-09-11)**:RoboTwin 2.0 模拟器仓库已克隆(`robotwin-Platform/RoboTwin` @
+`96c1fea`,2026-09-05 提交,752 文件);官方 RoboTwin 55k EMA ckpt(828 MB,
+sha256 `d0183df6…f7c034`)+ `config.yaml` + `dataset_statistics.json` 已落地
+`v4_assets/TurboVLA_robotwin/`(祖先目录结构满足 `share_tools.py:83` 加载要求)。
+待办:DINOv3 ViT-L、StarVLA/RoboTwin-Clean 数据、`turbovla-robotwin` env、
+GroundingDINO(C1/B 用)——明细见 `ASSETS.md`。
+
+### P0A 方案 A 移植(v7 新增;代码工作不占卡,与 C0 评测并行)
+- 内容 = §5.7 四个移植单元(P1 文本 / P2 视觉 / P3 融合 / P4 动作头)+ 验证门;
+  wrapper framework 配置补 `text.encoder_type` / `vision.encoder_type` / `fusion.type`
+  三分支(默认 = 官方,官方路径零改动)。
+- **退出标准**:逐模块结构加载零缺漏 + 参数哈希断言(§5.2 同款);真卡前向单步通过;
+  spikingjelly LIF CUDA kernel 在 `turbovla-robotwin` env 冒烟通过;移植差异清单记
+  `ASSETS.md`。
 
 ### C0-20(运行筛查)
 - 官方 ckpt × 50 × 20 trials:验证 launcher、解析器、分片并行。
@@ -100,6 +128,13 @@ batch、同步数、同评测协议各训一次、各评一次,与官方发布 6
 3. §5.3 验收阈值定稿进 `ASSETS.md`
 4. **退出标准**:50 任务数据齐全(哈希抽查);probe 报告(统一档位)回填。
 
+### A-S 冒烟训练(v7 新增;P0A + P0T 完成后即可,不与 C1/B 抢卡)
+- 1k 步,§5.4 修正版 trainer + 专用短跑配置(跨过 save/eval 触发点),seed 42;batch 档位
+  按 A 自身显存实测选定(**A 与 C1/B 不构成对照,允许不同档**,实测组合记 `ASSETS.md`)。
+- **退出标准**:loss 形态正常、无 NaN、ckpt + EMA 落盘;(可选)1 任务 × 20-trial 短评
+  跑通 RoboTwin 评测栈。
+- **边界:A-S 数字不作任何结论,不进主表、不与官方 60.2% 并列。**
+
 ### C1 ∥ B 成对训练(前置:§5.4 修正版 trainer + 续训策略拍板 + §5.5 快照初始化)
 - **C1**:官方配方(`load_bert: true` 保持官方行为)。
 - **B**:`load_bert: false` + §5.2/§5.3。
@@ -115,7 +150,7 @@ batch、同步数、同评测协议各训一次、各评一次,与官方发布 6
 
 ### A(占位,后续另拟方案文档)
 
-## 5. 方案 B 的接入与前置修正
+## 5. 方案 B / A 的接入与前置修正
 
 ### 5.1 starVLA wrapper 接入
 `_core_config` 硬编码 BERT → 补丁:framework 配置加 `text.encoder_type / text.model_source_path`
@@ -191,6 +226,45 @@ B:`load_bert: false`;初始化后对 H2/H3 折入权重做哈希断言。**文�
   `binary_threshold=0.49`、夹爪二次二值化(≥0.5)、评测精度组合 → 全进**结果指纹**(§6)。
 - C1/B 试验条件逐项一致;**"同 trials 数量"不是配对试验**,统计口径沿用 §C0-100。
 
+### 5.7 方案 A 接入提纲(v7 新增;A 若推进到 55k 正式,须先另拟完整方案并经确认)
+
+**接入点(已核,2026-09-11)**:`third_party/starvla_runtime/starVLA/model/framework/
+VLM4A/TurboVLA.py` 的 `_core_config` 把 framework 配置硬编码进
+`TextEncoderConfig / VisionEncoderConfig / InteractionConfig` 等 → 补丁:framework 配置加
+`text.encoder_type`、`vision.encoder_type`、`fusion.type` 三字段(默认 = 官方值,官方路径
+零改动),构建前按类型分支;训练/评测同 wrapper,自动继承。
+
+**四个移植单元**(源码 = `spike-turbovla` + `v2_code_bundle_20260906`):
+
+| # | 单元 | 来源 | 关键适配点 |
+|---|---|---|---|
+| P1 | 文本 sootspike(含 SpikeLinearProjection) | 复用 §5.1–§5.2 成果 | 与 B 完全同一段代码,不重复实现 |
+| P2 | 视觉 SDT-V3(`V3_19.0M_1x4.pth` 已在) | v2_code_bundle | **3 视图**:LIBERO 版按 2 视图训练,3 视图位置嵌入需扩容/重初始化并**声明为干预**;输入分辨率对齐 RoboTwin 相机 |
+| P3 | 融合 Spike2Max(SpikeFFNResidual 带 LIF) | spike-turbovla `spiking.py` | spikingjelly LIF CUDA kernel 在新 env 冒烟;GroundingDINO 预加载不适用(同 LIBERO,全新 LayerScale,声明) |
+| P4 | 动作头 14-D | 官方已有 | 官方 RoboTwin 头本就是 14-D(12 关节 min-max + 2 夹爪 binary),沿用;horizon 50 |
+
+**验证门(P0A 退出标准)**:逐模块结构加载零缺漏 + 参数哈希断言(§5.2 同款)→ 真卡前向
+单步 → 固定输入批数值检查(**§5.3 矩阵扩展覆盖视觉特征与融合输出**,不止文本)→ 1k 短训
+(= A-S)。
+
+**待拍板(不阻塞移植)**:
+1. A 正式化初始化:**从头**(对齐 C1/B,默认)vs 骨干热启动(载 v3 LIBERO 的
+   SDT-V3/sootspike 权重——interaction/融合/动作头形状不匹配仍全新,叙事变,须声明);
+2. A 精度组合:§5.3 矩阵扩展到三组件后定;
+3. A 与 C1 的快照共享范围(§5.5)——仅当 A 推进到 55k 正式才需要。
+
+### 5.8 C1-vs-B 判定规则(预注册,v7 新增;首次评测开始前不得更改)
+
+- 统计口径沿用 §C0-100:报告**实际成功数** + 95% 正态近似区间;两臂各 5000 局,差值参考
+  CI ≈ ±1.9pp(p≈0.6 双侧;任务内试验非独立,仅作量级参考)。**单 seed 单差值,混含
+  实现/环境/协议差异,所有结论只在该 seed 下成立。**
+- **成立** = B − C1 ≥ −2pp(含噪声内):文本 spike 化在双臂基准上不劣于 ANN BERT;
+- **不成立** = B − C1 ≤ −4pp(≈2 倍 CI,触发 §3-B 回退顺序:数值行为复查 → 短解冻微调
+  (声明干预)→ 回退 SpikingLM);
+- **中间带(−4pp < B − C1 < −2pp)** = 不定:是否加测由用户拍板,禁止事后追加倍数直到
+  出"想要"的符号;
+- 判定用**与 C1 相同权重口径**(EMA-55k,对齐官方 §1.1);raw 列可另报,不参与判定。
+
 ## 6. 结果解析与硬校验
 
 - 输入:launcher LOG_DIR 逐任务日志;
@@ -202,6 +276,20 @@ B:`load_bert: false`;初始化后对 H2/H3 折入权重做哈希断言。**文�
 
 - 全局 192 单卡可达(前提 §5.4 修正版 + §4-P0T 统一档位);55k 步 ≈ 2–4 天/次,串行 4–8 天;借 4 卡各 ≈1 天。
 - 评测预算:**C0-official 5000 + C1 5000 + B 5000 = 15000;C0-common(若需)+5000 = 上限 20000**;20-trial 筛查另计。同卡绑定,按卡分片;估时以 C0-20 实测回填。
+
+**总预算表(v7 新增;全部为估算,以实测回填,拍 §10-2 算力前先看这张)**:
+
+| 项 | 规模 | 卡时估算(1×H100 折算) |
+|---|---|---|
+| A-S 冒烟 | 1k 步 + 可选 20-trial | ≈0.5 天 |
+| C0-20 + C0-100(official) | 1 000 + 5 000 局 | 待 C0-20 实测回填 |
+| C1 55k | 全局 192 | 2–4 天 |
+| B 55k | 同上 | 2–4 天 |
+| 统一评测 C1/B | 2 × 5 000 局 | 待实测回填 |
+| **小计(不含 A 正式)** | | **≈5–9 天训练 + 评测** |
+| A-55k(若拍板) | 三 spike 组件,较 C1/B 上浮 | ≈3–6 天 + 评测 5 000 局 |
+
+借 4 卡可把 C1+B 从 4–8 天压到各 ≈1 天;A-S 只需 1 卡半天,可与任何阶段穿插。
 
 ## 8. 风险与对策
 
@@ -223,7 +311,10 @@ B:`load_bert: false`;初始化后对 H2/H3 折入权重做哈希断言。**文�
 | HF 下载不通/慢 | `HF_ENDPOINT=https://hf-mirror.com`;备选 ModelScope/手动 |
 | SAPIEN 渲染问题 | P0E 冒烟,不拖后 |
 | 单卡训练过慢 | P0T probe 定档;两臂必须同步数 |
-| spike 组件双臂失效 | C1-vs-B 单变量设计;A 另拟 |
+| spike 组件双臂失效 | C1-vs-B 单变量设计;**A-S 冒烟前置去风险**(§4-P0A/§5.7) |
+| A 移植形状适配失败(3 视图位置嵌入 / 14-D 头) | P0A 逐单元验证门;P2 位置嵌入扩容**声明为干预** |
+| spikingjelly LIF 在新 env 不可用(无 CUDA kernel) | P0A kernel 冒烟前置;不可用即冻结 P3 排期并上报,不带病开训 |
+| RoboTwin LeRobot 数据管道与 spike 模块衔接(分辨率/文本长度/padding) | P0A 固定输入批数值检查覆盖(§5.3 扩展到视觉/融合输出) |
 
 ## 9. 命名
 
@@ -231,14 +322,15 @@ B:`load_bert: false`;初始化后对 H2/H3 折入权重做哈希断言。**文�
 - 全架构名 `{基准}_{视觉}_{文本}_{融合}_{日期}`:
   - **B**:`robotwin_dinov3l_sootspike_annfusion_<启动日>`
   - **A**:`robotwin_sdtv3_sootspike_snnfusion_<启动日>`(三组件 spike/混合 SNN-ANN;文本投影与融合 FFN 按我方实现本身即脉冲模块)
-  - C1 记 `ann_retrain_seed42`;C0-official / C0-common 为官方模型复评,不占架构名。
+  - C1 记 `ann_retrain_seed42`;C0-official / C0-common 为官方模型复评,不占架构名;
+    **A-S 冒烟记 `asmoke_<日>`,不占架构名、不进对照表。**
 
-## 10. 待确认决策点
+## 10. 决策点状态(v7 更新,2026-09-11)
 
-1. **主线确认**:P0E → C0-20 → C0-100(official)→ P0T → C1∥B → 统一协议评测 → 视 B 结论另拟 A?
-2. **算力**:C1+B 串行 4–8 天(1 卡)vs 临时借 4 卡(各 ≈1 天)?
-3. **精度决策流**:接受"数值检查 A(高精度参考)→ 部署检查(自身配置参考)→ 定 C1/B 统一精度;官方默认仅作候选与 C0 口径;必要时另跑 C0-common"?
-4. **续训策略**:完整状态恢复(实现+验证)还是"55k 不得中断"(未拍板按后者)?
-5. **文本投影**:沿用 → 校准 → 重初始化的默认顺序(校准须声明为干预)?
-6. **评测预算**:15000(无 C0-common)~ 20000(含)episodes 是否接受?紧张时 C1/B 降 50 trials 并记录口径?
-7. **下载启动**:P0E(C0 全部资产)现在开始?P0T 数据下载是否并行?
+1. **主线确认**:已按用户 2026-09-11 指令("用 v3 架构跑 RoboTwin 试试")改为三段式,A 冒烟前置;**待确认 v7 文本本身**。
+2. **算力**:待拍板(A-S 不受影响;C1+B 串行 4–8 天(1 卡)vs 借 4 卡各 ≈1 天;总预算见 §7 表)。
+3. **精度决策流**:待拍板("数值检查 A(高精度参考)→ 部署检查(自身配置参考)→ 定统一精度;官方默认仅作候选与 C0 口径;必要时另跑 C0-common");不阻塞 P0E/P0A/P0T。
+4. **续训策略**:未拍板按 **"55k 不得中断"** 执行(默认)。
+5. **文本投影**:默认 沿用 → 校准 → 重初始化(校准须声明为干预);待确认。
+6. **评测预算**:15000(无 C0-common)~ 20000(含)+ A-S 可选 20 局;待确认;紧张时 C1/B 降 50 trials 并记录口径。
+7. **下载启动**:✅ **进行中(2026-09-11)**:RoboTwin 仓库 @`96c1fea`、官方 55k EMA ckpt 已落地;ViT-L / 数据 / GroundingDINO 待下(见 `ASSETS.md`)。P0T 数据下载是否与 env 搭建并行,待确认。
