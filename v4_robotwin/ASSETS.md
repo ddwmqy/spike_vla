@@ -1,5 +1,9 @@
 # v4-robotwin 资产与版本钉(P0E/P0T 进度,2026-09-12)
 
+> **算力(2026-09-12 定)**:算力服务器 **4 张卡** → 走官方配置路径
+> (`NUM_PROCESSES=4 PER_DEVICE_BATCH_SIZE=48 GRADIENT_ACCUMULATION_STEPS=1`,全局 192),
+> C1、B 各 ≈1 天、串行;评测按卡分片。
+
 > 配套:`PLAN_CN.md` v7。本文件按计划 §4-P0E 第 3 条建立;每项落地即回填,sha256 齐全后本文件即为"钉版本"凭证。
 
 ## 已就位
@@ -38,6 +42,23 @@
 | CPU 计数(accum=1 与 4) | `scripts/gate5_trainer_counting.py` | ✅ PASS:scheduler/EMA 步数 = completed_steps = 20;eval/save = 4/2 次;**变异检验**旧代码 accum=4 → scheduler 80、eval 16(测试有牙) |
 | **GPU(本机 H100 MIG)真实数据+真实模型** | `scripts/robotwin/verify_54_counting.py` | ✅ PASS ×3:accum=1(5 步)、accum=4(32 micro→8 step)、**accum=4 + DeepSpeed ZeRO-2**(`accelerate launch --config_file deepspeed_zero2.yaml`,服务器同款启动);scheduler 步 = completed_steps、warmup 峰值在 warmup-1(记录口径,见脚本注释)、门禁触发数与落盘 ckpt 对账一致。报告存各 run 目录 `54_verify_report.json` |
 | 待算力服务器 | 同上 | 可跑 1100 步跨 warmup 1000 的全尺寸复验(非阻塞;机制已在真实数据上验证) |
+
+### A 臂冒烟(本地,dev pod H100 MIG;非计划 A-S,数字不作结论)
+
+**流水线健康证据**:`clean50_a.yaml` 全链路(真实 clean50 数据 + 三 spike 组件)1 000 步实测:
+
+| 项 | 值 |
+|---|---|
+| 规模 | 1 000 步,batch 4 × 1 进程(非官方全局 192;故**任何数字都不具比较含义**) |
+| 墙钟 | 8 分 45 秒(≈0.5 s/it) |
+| loss | 0.352(step 25) → 0.104(step 1000);前 1/4 均值 0.233 → 后 1/4 均值 0.117(**腰斩**) |
+| 数值 | 40 个记录点**全部有限**,min 0.069 / max 0.352,**无 NaN** |
+| 产物 | ckpt + EMA 各两次(step 500、1000),`summary.jsonl` 记录一致 |
+| 日志 | `v4_code/results/Checkpoints/asmoke_log_20260912.txt`(run 目录 `asmoke_localdebug2_20260912/`) |
+
+→ A-S 的退出标准(loss 形态正常、无 NaN、ckpt+EMA 落盘)在本地规模下**已满足**;服务器版
+A-S 的价值收敛为"确认官方 4 卡 × batch 48 档位",不再是去风险必需。命名仍按
+§9 保留 `asmoke_<日>` 给服务器正式冒烟。
 
 ### 本地调试发现与修复(2026-09-12,dev pod;详见 `v4_code/experiments/robotwin/ARMS_CN.md`)
 
