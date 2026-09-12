@@ -213,6 +213,25 @@ B:`load_bert: false`;初始化后对 H2/H3 折入权重做哈希断言。**文�
   未拍板前按 ② 执行。
 - 两臂同用修正版;验证输出记 `ASSETS.md`。
 
+**§5.4 进度(2026-09-12)**:
+- **修正已落地**(`v4_code` `third_party/.../train_starvla.py`):① `lr_scheduler.step()` 加
+  `sync_gradients` 门控(调度器在 `accelerator.prepare()` 之外创建,原先每 micro-batch 推进,
+  warmup 1000 在 accum=N 时实际只有 1000/N 个 optimizer step,且 resume 补步会累积漂移);
+  ② eval/save 门禁加 update-step 门控(`completed_steps` 只在同步步变化,原先同一 step 值会
+  重复触发、且在 step 0 误触发,每次 eval 额外消耗一个训练 batch,见 `eval_action_model`)
+  ③ EMA 侧 `_update_ema` 原本已有 sync 门控,无需改动。**accum=1(官方 RoboTwin 配置)时
+  两处门控均为恒真,官方路径行为不变。**
+- **CPU 计数验证已过**(`scripts/gate5_trainer_counting.py`,直接驱动真实 `train()` /
+  `_train_step`):accum=1 与 4 下 `completed_steps` = scheduler 步 = EMA 更新 = 20,
+  eval/save 各恰好 4/2 次;**变异检验**(临时还原旧代码)确认测试有牙:旧代码下
+  accum=4 时 scheduler=80、eval=16。
+- **GPU 验证待跑**(算力服务器):`scripts/robotwin/verify_54_counting.py` —— 带仪表跑官方配方
+  短跑(默认 1100 步 / warmup 1000 / eval 25 / save 200,跨过 warmup 边界),断言 LR 每个
+  optimizer step 才推进、warmup 峰值恰好落在第 1000 个 optimizer step、门禁触发数与
+  落盘 checkpoint 对账;`--accum 4` 可低成本复验累积路径。结果写 run 目录
+  `54_verify_report.json`,回填 `ASSETS.md`。**该短跑同时是 C1 配方在真实数据上的首次
+  端到端跑通(数据加载/3 视图/ViT-L),建议在 55k 正式训练前排入。**
+
 ### 5.5 初始化一致性(快照法)
 1. **快照来源与时机**:取自**完成 DINOv3/GroundingDINO 预加载之后的 C1 step-0 模型**
    (避免取到预加载前的随机 interaction——那样两组虽一致却共同偏离官方初始化);

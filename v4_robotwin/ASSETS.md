@@ -26,6 +26,17 @@
 - [ ] `turbovla-robotwin` env(python 3.10,`pip install -e ".[robotwin]"` + **FlashAttention-2 另装**)——在算力服务器建
 - [x] ~~SmoothSpike 源码/权重 sha256 补齐~~(✅ 2026-09-12:5 个上游运行时文件已哈希,见下)
 
+### §5.4 训练循环计数修正(v4_code,2026-09-12)
+
+`third_party/starvla_runtime/starVLA/training/train_starvla.py` 两处修改(accum=1 时行为不变):
+① `lr_scheduler.step()` 加 `if self.accelerator.sync_gradients:` 门控;② eval/save 门禁统一由
+`is_update_step = self.accelerator.sync_gradients` 门控。
+
+| 验证 | 工具 | 结果 |
+|---|---|---|
+| CPU 计数(accum=1 与 4) | `scripts/gate5_trainer_counting.py` | ✅ PASS:scheduler/EMA 步数 = completed_steps = 20;eval/save = 4/2 次;**变异检验**旧代码 accum=4 → scheduler 80、eval 16(测试有牙) |
+| GPU 短跑(官方配方,跨 warmup 1000 边界) | `scripts/robotwin/verify_54_counting.py` | ⏳ 待算力服务器执行;报告落 run 目录 `54_verify_report.json` |
+
 ### third_party 上游源码指纹(patch 后;`scripts/setup_third_party.py` 重建产物)
 
 | 文件 | sha256 |
