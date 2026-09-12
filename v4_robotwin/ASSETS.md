@@ -35,7 +35,22 @@
 | 验证 | 工具 | 结果 |
 |---|---|---|
 | CPU 计数(accum=1 与 4) | `scripts/gate5_trainer_counting.py` | ✅ PASS:scheduler/EMA 步数 = completed_steps = 20;eval/save = 4/2 次;**变异检验**旧代码 accum=4 → scheduler 80、eval 16(测试有牙) |
-| GPU 短跑(官方配方,跨 warmup 1000 边界) | `scripts/robotwin/verify_54_counting.py` | ⏳ 待算力服务器执行;报告落 run 目录 `54_verify_report.json` |
+| **GPU(本机 H100 MIG)真实数据+真实模型** | `scripts/robotwin/verify_54_counting.py` | ✅ PASS ×3:accum=1(5 步)、accum=4(32 micro→8 step)、**accum=4 + DeepSpeed ZeRO-2**(`accelerate launch --config_file deepspeed_zero2.yaml`,服务器同款启动);scheduler 步 = completed_steps、warmup 峰值在 warmup-1(记录口径,见脚本注释)、门禁触发数与落盘 ckpt 对账一致。报告存各 run 目录 `54_verify_report.json` |
+| 待算力服务器 | 同上 | 可跑 1100 步跨 warmup 1000 的全尺寸复验(非阻塞;机制已在真实数据上验证) |
+
+### 本地调试发现与修复(2026-09-12,dev pod;详见 `v4_code/experiments/robotwin/ARMS_CN.md`)
+
+| 发现 | 影响 | 处置 |
+|---|---|---|
+| HF `StarVLA/RoboTwin-Clean` 是**平铺**任务目录,而注册表按 `Clean/<task_name>` 解析 | 训练直接找不到数据 | 已建软链 `v4_assets/robotwin_data/RoboTwin/Clean -> ../StarVLA_RoboTwin_Clean`;`ROBOTWIN_DATA_ROOT` 指向 `.../robotwin_data/RoboTwin` |
+| **torch≥2.6 的 `torch.load` 默认 `weights_only=True`**,官方 init ckpt(GroundingDINO,含 `args` Namespace)读入即失败;且 `torch.load` 读不了 safetensors | C1/B 训练在初始化阶段崩溃(服务器同样会踩) | 已修 `share_tools.load_checkpoint_file`(safetensors + `weights_only=False`),wrapper/base_framework/trainer_tools 三处统一;本地用合成 init(含 Namespace 的 `.pth`)验证通过 |
+| `normalize_dotlist_args` **静默丢弃无 `--` 前缀的覆盖参数** | 覆盖失效(如 `MAX_TRAIN_STEPS` 类覆盖会退回 yaml 的 10 万步) | 手册 `ARMS_CN.md` 显式警示;验证脚本已改为 `--` 形式 |
+| 单进程裸跑训练脚本时 dataloader 的 `dist.get_rank()` 报进程组未初始化 | 只能经 `accelerate launch` 启动 | 验证器自带单进程进程组初始化;正式训练走 `train.sh` |
+| pod 的 v3 conda env 内 `wandb` import 失败(protobuf 版本错配) | 本地调试受阻(不影响服务器新 env) | 本地用桩 `v4_assets/debug_stubs/wandb.py`(经 `PYTHONPATH` 前置,不入库);不动 v3 环境 |
+| cv2 缺 `libGL.so.1`(pod 容器) | 本地调试受阻 | `apt-get install -y libgl1`(容器重启需重装;服务器应装 headless 版 opencv) |
+
+**§5.2 防护自测**(`v4_code/scripts/check_b_init_hash.py`,合成 init 源):`load_bert=false` 时
+211 个脉冲文本张量**逐位未动**(PASS);`load_bert=true` 时 211 个**全被覆盖**(危害证实,防护承重)。
 
 ### third_party 上游源码指纹(patch 后;`scripts/setup_third_party.py` 重建产物)
 

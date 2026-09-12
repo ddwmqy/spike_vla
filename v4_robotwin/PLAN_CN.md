@@ -108,6 +108,12 @@ GroundingDINO(C1/B 用)——明细见 `ASSETS.md`。
 - **退出标准**:逐模块结构加载零缺漏 + 参数哈希断言(§5.2 同款);真卡前向单步通过;
   spikingjelly LIF CUDA kernel 在 `turbovla-robotwin` env 冒烟通过;移植差异清单记
   `ASSETS.md`。
+- **进度(2026-09-12)**:前两项**已在本机 H100 MIG 上全过**(门 #0 官方路径逐位一致、
+  门 #1 A 臂构建+前向、门 #2 权重哈希、门 #2b yaml→wrapper→predict_action、门 #3 真卡
+  fp32/bf16 前向);**第三项不适用**——SDT-V3 上游 backbone 只依赖 timm+einops,不含
+  spikingjelly LIF kernel(v3 的 Spike2Max 亦为纯 PyTorch autograd),故无需该 env 冒烟;
+  移植差异清单见 `ASSETS.md`。**新增产出**:`experiments/robotwin/ARMS_CN.md`(四臂启动
+  手册,算力服务器交接用)。
 
 ### C0-20(运行筛查)
 - 官方 ckpt × 50 × 20 trials:验证 launcher、解析器、分片并行。
@@ -225,12 +231,15 @@ B:`load_bert: false`;初始化后对 H2/H3 折入权重做哈希断言。**文�
   `_train_step`):accum=1 与 4 下 `completed_steps` = scheduler 步 = EMA 更新 = 20,
   eval/save 各恰好 4/2 次;**变异检验**(临时还原旧代码)确认测试有牙:旧代码下
   accum=4 时 scheduler=80、eval=16。
-- **GPU 验证待跑**(算力服务器):`scripts/robotwin/verify_54_counting.py` —— 带仪表跑官方配方
-  短跑(默认 1100 步 / warmup 1000 / eval 25 / save 200,跨过 warmup 边界),断言 LR 每个
-  optimizer step 才推进、warmup 峰值恰好落在第 1000 个 optimizer step、门禁触发数与
-  落盘 checkpoint 对账;`--accum 4` 可低成本复验累积路径。结果写 run 目录
-  `54_verify_report.json`,回填 `ASSETS.md`。**该短跑同时是 C1 配方在真实数据上的首次
-  端到端跑通(数据加载/3 视图/ViT-L),建议在 55k 正式训练前排入。**
+- **GPU 验证已在本机(dev pod 的 H100 MIG 3g.40gb)完成**,真实数据 + 真实模型:
+  - accum=1(5 步)与 accum=4(32 micro-batch → 8 step)均 PASS,scheduler/EMA/门禁计数一致;
+  - **DeepSpeed ZeRO-2 路径**(`accelerate launch --config_file deepspeed_zero2.yaml`,
+    即服务器 train.sh 的同款启动方式)亦 PASS —— 证明 `sync_gradients` 在 DeepSpeed 下语义一致;
+  - 报告存 run 目录 `54_verify_report.json`,详见 `ASSETS.md`。
+- 调试中修掉的验证器缺陷(都会被带到服务器,故必须先进本地):① 覆盖参数必须带 `--` 前缀,
+  否则 `normalize_dotlist_args` 静默丢弃(当时所有覆盖失效,会按 yaml 的 10 万步/每 5000 存跑,
+  验证完全落空);② 单进程裸跑需自建进程组(dataloader 无条件 `dist.get_rank()`);
+  ③ 断言边界:只有内部步带完整累积窗口,step 0 不计入门禁期望。
 
 ### 5.5 初始化一致性(快照法)
 1. **快照来源与时机**:取自**完成 DINOv3/GroundingDINO 预加载之后的 C1 step-0 模型**
@@ -339,6 +348,9 @@ VLM4A/TurboVLA.py` 的 `_core_config` 把 framework 配置硬编码进
 | A 移植形状适配失败(3 视图位置嵌入 / 14-D 头) | P0A 逐单元验证门;P2 位置嵌入扩容**声明为干预** |
 | spikingjelly LIF 在新 env 不可用(无 CUDA kernel) | P0A kernel 冒烟前置;不可用即冻结 P3 排期并上报,不带病开训 |
 | RoboTwin LeRobot 数据管道与 spike 模块衔接(分辨率/文本长度/padding) | P0A 固定输入批数值检查覆盖(§5.3 扩展到视觉/融合输出) |
+| **数据目录缺 `Clean/` 层**(HF 仓库平铺,注册表按 `Clean/<task>` 解析) | ✅ 2026-09-12 本地定位并修复:软链 `robotwin_data/RoboTwin/Clean`;记入 `ASSETS.md` |
+| **`torch.load` 默认 `weights_only=True`**(torch≥2.6)使官方 init ckpt(含 `args` Namespace)无法读入 | ✅ 2026-09-12 本地复现并修复:`share_tools.load_checkpoint_file`(safetensors + `weights_only=False`),wrapper/base_framework/trainer_tools 三处统一 |
+| **覆盖参数无 `--` 前缀被静默丢弃**(`normalize_dotlist_args`) | ✅ 2026-09-12 本地定位;手册 `ARMS_CN.md` §2/§4 显式警示 |
 
 ## 9. 命名
 
