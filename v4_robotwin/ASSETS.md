@@ -16,13 +16,14 @@
 | bert-base-uncased | `v2_code_bundle_20260906/resources/pretrained/bert-base-uncased/` | — | C1 / 官方路径用 |
 | DINOv3 ViT-B(LIBERO 用) | `v2_code_bundle_20260906/resources/pretrained/dinov3-vitb16-pretrain-lvd1689m/` | — | **RoboTwin 不用**(官方 README §130:RoboTwin = ViT-L);其 224px 处理器目录兼作 A 臂 `SDTV3_PROCESSOR_PATH` |
 | DINOv3 **ViT-L**(C1/B/官方 ckpt 用) | `/data/260010028/dwh_vla/v4_assets/dinov3-vitl16-pretrain-lvd1689m/` | model.safetensors 1.21 GB,sha256 `dcb2e45127cccbf1601e5f42fef165eea275c8e5213197e8dcf3f48822718179`;415 tensors 自洽,dinov3_vit 1024/24L/patch16/224 | 来源 ModelScope 官方镜像 `facebook/dinov3-vitl16-pretrain-lvd1689m`(hf-mirror 对 gated 文件 403);config `135ecd23…`,preprocessor `960c41d1…` |
-| RoboTwin-Clean 数据(P0T) | `/data/260010028/dwh_vla/v4_assets/robotwin_data/StarVLA_RoboTwin_Clean/` | **50 任务 × 50 eps = 2500 局,3.9 GB**;LeRobot 格式(parquet action/state 均 14-D、fps 15、视频配对抽查通过) | 来源 HF `StarVLA/RoboTwin-Clean`(hf-mirror);训练 yaml `ROBOTWIN_DATA_ROOT=/data/260010028/dwh_vla/v4_assets/robotwin_data` |
+| RoboTwin-Clean 数据(P0T) | `/data/260010028/dwh_vla/v4_assets/robotwin_data/StarVLA_RoboTwin_Clean/` | **50 任务 × 50 eps = 2500 局,3.9 GB**;LeRobot 格式(parquet action/state 均 14-D、fps 15、视频配对抽查通过) | 来源 HF `StarVLA/RoboTwin-Clean`(hf-mirror);**仓库是平铺布局**,训练需经 `robotwin_data/RoboTwin/Clean` 软链;`ROBOTWIN_DATA_ROOT=/data/260010028/dwh_vla/v4_assets/robotwin_data/RoboTwin` |
+| GroundingDINO swint_ogc(C1 初始化) | `/data/260010028/dwh_vla/v4_assets/groundingdino/groundingdino_swint_ogc.pth` | 694 MB;sha256 `3b3ca2563c77c69f651d7bd133e97139c186df06231157a64c507099c52bc799`;**纯 `{'model': …}` 940 张量(无 `args` Namespace)**,默认 `weights_only=True` 可读 | 来源 HF 镜像 `ShilongLiu/GroundingDINO`(hf-mirror,快;GitHub releases 只有 ~70 KB/s 已弃)。键结构:`bert.` 200 / `feat_map.` 2 / `transformer.encoder.text_layers.` 72 / `fusion_layers.` 108(**B 臂 §5.2 危害源 = 那 200 个普通 BERT 张量**)|
 
 ## 待办
 
 - [x] ~~DINOv3 **ViT-L** 权重~~(✅ 2026-09-11,见上表)
 - [x] ~~StarVLA/RoboTwin-Clean 50 任务数据~~(✅ 2026-09-12:50×50=2500 局 / 3.9 GB,结构抽查通过,见上表)
-- [ ] GroundingDINO swint ogc(C1/B 初始化用;**A 不需要**)
+- [x] ~~GroundingDINO swint ogc(C1/B 初始化用)~~(✅ 2026-09-12:694 MB,sha256 见上表;A 臂不用)
 - [ ] `turbovla-robotwin` env(python 3.10,`pip install -e ".[robotwin]"` + **FlashAttention-2 另装**)——在算力服务器建
 - [x] ~~SmoothSpike 源码/权重 sha256 补齐~~(✅ 2026-09-12:5 个上游运行时文件已哈希,见下)
 
@@ -43,14 +44,16 @@
 | 发现 | 影响 | 处置 |
 |---|---|---|
 | HF `StarVLA/RoboTwin-Clean` 是**平铺**任务目录,而注册表按 `Clean/<task_name>` 解析 | 训练直接找不到数据 | 已建软链 `v4_assets/robotwin_data/RoboTwin/Clean -> ../StarVLA_RoboTwin_Clean`;`ROBOTWIN_DATA_ROOT` 指向 `.../robotwin_data/RoboTwin` |
-| **torch≥2.6 的 `torch.load` 默认 `weights_only=True`**,官方 init ckpt(GroundingDINO,含 `args` Namespace)读入即失败;且 `torch.load` 读不了 safetensors | C1/B 训练在初始化阶段崩溃(服务器同样会踩) | 已修 `share_tools.load_checkpoint_file`(safetensors + `weights_only=False`),wrapper/base_framework/trainer_tools 三处统一;本地用合成 init(含 Namespace 的 `.pth`)验证通过 |
+| `torch.load` 读不了 safetensors;且 torch≥2.6 默认 `weights_only=True` 会拒绝含非张量对象的 ckpt | 官方 55k ckpt(safetensors)在 wrapper 里无法作为初始化源;**发布版** GroundingDINO ckpt 实测是纯张量字典、默认设置可读(训练脚本产出的变体含 `args` 则会失败),属加固而非阻塞 | 已修 `share_tools.load_checkpoint_file`(safetensors + `weights_only=False`),wrapper/base_framework/trainer_tools 三处统一;本地以合成 init(含 Namespace 的 `.pth`)与真实 GroundingDINO 文件分别验证通过 |
 | `normalize_dotlist_args` **静默丢弃无 `--` 前缀的覆盖参数** | 覆盖失效(如 `MAX_TRAIN_STEPS` 类覆盖会退回 yaml 的 10 万步) | 手册 `ARMS_CN.md` 显式警示;验证脚本已改为 `--` 形式 |
 | 单进程裸跑训练脚本时 dataloader 的 `dist.get_rank()` 报进程组未初始化 | 只能经 `accelerate launch` 启动 | 验证器自带单进程进程组初始化;正式训练走 `train.sh` |
 | pod 的 v3 conda env 内 `wandb` import 失败(protobuf 版本错配) | 本地调试受阻(不影响服务器新 env) | 本地用桩 `v4_assets/debug_stubs/wandb.py`(经 `PYTHONPATH` 前置,不入库);不动 v3 环境 |
 | cv2 缺 `libGL.so.1`(pod 容器) | 本地调试受阻 | `apt-get install -y libgl1`(容器重启需重装;服务器应装 headless 版 opencv) |
 
-**§5.2 防护自测**(`v4_code/scripts/check_b_init_hash.py`,合成 init 源):`load_bert=false` 时
-211 个脉冲文本张量**逐位未动**(PASS);`load_bert=true` 时 211 个**全被覆盖**(危害证实,防护承重)。
+**§5.2 防护验证**(`v4_code/scripts/check_b_init_hash.py`),两种 init 源都跑过:
+- 合成 init(393 张量,含 `args` Namespace):`load_bert=false` → 载入 182,211 张脉冲文本张量逐位未动(PASS);`load_bert=true` → 393,211 张**全被覆盖**。
+- **真实 GroundingDINO ckpt**:`load_bert=false` → 载入 **182**(2 投影 + 72 文本层 + 108 融合层),211 张逐位未动(PASS);`load_bert=true` → 载入 **331**,其中 **149 张脉冲文本张量被覆盖,max|Δ| 达 2.05**(半覆盖式静默污染)。
+→ 结论:`load_bert: false` 是 B 臂的**必要**防护,不是形式条款。
 
 ### third_party 上游源码指纹(patch 后;`scripts/setup_third_party.py` 重建产物)
 

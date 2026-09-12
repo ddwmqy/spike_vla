@@ -349,7 +349,8 @@ VLM4A/TurboVLA.py` 的 `_core_config` 把 framework 配置硬编码进
 | spikingjelly LIF 在新 env 不可用(无 CUDA kernel) | P0A kernel 冒烟前置;不可用即冻结 P3 排期并上报,不带病开训 |
 | RoboTwin LeRobot 数据管道与 spike 模块衔接(分辨率/文本长度/padding) | P0A 固定输入批数值检查覆盖(§5.3 扩展到视觉/融合输出) |
 | **数据目录缺 `Clean/` 层**(HF 仓库平铺,注册表按 `Clean/<task>` 解析) | ✅ 2026-09-12 本地定位并修复:软链 `robotwin_data/RoboTwin/Clean`;记入 `ASSETS.md` |
-| **`torch.load` 默认 `weights_only=True`**(torch≥2.6)使官方 init ckpt(含 `args` Namespace)无法读入 | ✅ 2026-09-12 本地复现并修复:`share_tools.load_checkpoint_file`(safetensors + `weights_only=False`),wrapper/base_framework/trainer_tools 三处统一 |
+| **`torch.load` 读不了 safetensors;torch≥2.6 默认 `weights_only=True` 拒绝含非张量对象的 ckpt** | ✅ 2026-09-12 已加固:`share_tools.load_checkpoint_file`(safetensors + `weights_only=False`),wrapper/base_framework/trainer_tools 三处统一。**注:发布版 GroundingDINO ckpt 实测为纯张量字典、默认设置可读**,故这是加固而非阻塞(训练脚本产出的含 `args` 变体、以及官方 55k safetensors 才需要它) |
+| **官方 init ckpt 的普通 BERT 张量会半覆盖 sootspike**(200 张里 149 张形状匹配) | ✅ 2026-09-12 本地以真实 ckpt 实测:`load_bert=true` → 149/211 脉冲张量被覆盖(max\|Δ\| 2.05);`false` → 211 张逐位未动。**§5.2 的 `load_bert: false` 是必要防护** |
 | **覆盖参数无 `--` 前缀被静默丢弃**(`normalize_dotlist_args`) | ✅ 2026-09-12 本地定位;手册 `ARMS_CN.md` §2/§4 显式警示 |
 
 ## 9. 命名
