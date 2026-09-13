@@ -108,7 +108,7 @@ bash /data/260010028/dwh_vla/v4_assets/server_train.sh c1
 grep "initialization tensors" c1.log   # 预期:loaded 381 initialization tensors(2026-09-13 实测)
 ```
 - 每 1000 步看一次 `Step N, Loss:`(logging_frequency=50),应有下降趋势
-- 参考规模:`434.036M` 总参 / `324.553M` 可训练;~1.38 s/step(4×H100,batch 192)→ 全程约 21 小时
+- 参考规模:`434.036M` 总参 / `324.553M` 可训练;**实测 ~1.9 s/step**(4×H100,全局 192;含周期性数据加载停顿)→ **全程约 29 小时**
 - **55k 不得中断**(§10-4);建议 `tmux`/`nohup` + `ssh -o ServerAliveInterval=60`
 - 到 55k 时:EMA ckpt = `checkpoints/steps_55000_ema_pytorch_model.pt`(+ 同目录 `config.yaml`/`dataset_statistics.json`,评测栈要求)
 
