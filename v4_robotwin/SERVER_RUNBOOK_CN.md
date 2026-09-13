@@ -95,33 +95,27 @@ nohup bash scripts/robotwin/train.sh > asmoke.log 2>&1 &
 - `grep "loaded 0 initialization\|load_pretrained" asmoke.log` → A 臂是 `from-scratch`,**不应**出现初始化加载
 - loss 下降、无 NaN;`results/Checkpoints/asmoke_*/checkpoints/` 出现 ckpt + EMA
 
-**失败处置**:改 `nohup` 为前台先跑 20 步确认无误,再转后台。
+**注意**:训练必须**前台**跑(`server_train.sh` 已如此)——后台 `nohup` 会在任务主进程退出时被平台**回收容器**一并杀掉(2026-09-13 实测)。
 
 ## 阶段 3:C1(4 卡,约 1 天)—— 官方配方锚点
 
 ```bash
-cd /data/260010028/dwh_vla/v4_code && source env.sh
-CONFIG_YAML=experiments/robotwin/configs/clean50.yaml \
-RUN_ID=c1_bert_ann_$(date +%Y%m%d) MAX_TRAIN_STEPS=55000 NUM_PROCESSES=4 \
-PER_DEVICE_BATCH_SIZE=48 GRADIENT_ACCUMULATION_STEPS=1 \
-nohup bash scripts/robotwin/train.sh > c1.log 2>&1 &
+bash /data/260010028/dwh_vla/v4_assets/server_train.sh c1
 ```
 
 **启动后必须核对**(用真实 ckpt 实测的期望值):
 ```bash
-grep "initialization tensors" c1.log   # 预期:loaded 331 initialization tensors
+grep "initialization tensors" c1.log   # 预期:loaded 381 initialization tensors(2026-09-13 实测)
 ```
 - 每 1000 步看一次 `Step N, Loss:`(logging_frequency=50),应有下降趋势
+- 参考规模:`434.036M` 总参 / `324.553M` 可训练;~1.38 s/step(4×H100,batch 192)→ 全程约 21 小时
 - **55k 不得中断**(§10-4);建议 `tmux`/`nohup` + `ssh -o ServerAliveInterval=60`
 - 到 55k 时:EMA ckpt = `checkpoints/steps_55000_ema_pytorch_model.pt`(+ 同目录 `config.yaml`/`dataset_statistics.json`,评测栈要求)
 
 ## 阶段 4:B(4 卡,约 1 天)—— 文本 spike 化
 
 ```bash
-CONFIG_YAML=experiments/robotwin/configs/clean50_b.yaml \
-RUN_ID=b_sootspike_ann_$(date +%Y%m%d) MAX_TRAIN_STEPS=55000 NUM_PROCESSES=4 \
-PER_DEVICE_BATCH_SIZE=48 GRADIENT_ACCUMULATION_STEPS=1 \
-nohup bash scripts/robotwin/train.sh > b.log 2>&1 &
+bash /data/260010028/dwh_vla/v4_assets/server_train.sh b
 ```
 **启动后必须核对**(§5.2 防覆盖):
 ```bash
