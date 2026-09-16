@@ -148,3 +148,4 @@ ROBOTWIN_TEST_NUM=100 bash scripts/robotwin/evaluate.sh results/Checkpoints/<b_r
 | `UnpicklingError` | torch≥2.6 的 `weights_only` 默认值 | 已修(走 `load_checkpoint_file`);别回退该改动 |
 | `run_id` 目录已存在 | train.sh 拒绝覆盖 | 换 RUN_ID 或删目录 |
 | 评测报 `failed to find a rendering device` | 无可用 Vulkan/光追 | 见阶段 1.1;pod 不可行,服务器需驱动完整 |
+| SAPIEN 导入即 `FileNotFoundError: '/etc/glvnd/egl_vendor.d'` | `sapien/_vulkan_tricks.py:56` 会逐个 listdir 两个 glvnd 目录,容器里 `/etc/glvnd/egl_vendor.d` 不存在 | 已修(2026-09-15):`server_vulkan_test.sh` **无条件**导出 `__EGL_VENDOR_LIBRARY_FILENAMES`(该变量在函数开头就提前返回),并补齐两个标准目录 + `libvulkan1` |

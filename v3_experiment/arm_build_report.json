@@ -1,0 +1,247 @@
+{
+  "reports": [
+    {
+      "arm": "A0p",
+      "combination": {
+        "vision": "dinov3",
+        "text": "bert",
+        "downstream": "ann"
+      },
+      "module_classes": {
+        "text_encoder": "TurboVLATextEncoder",
+        "vision_encoder": "DINOv3VisionEncoder",
+        "vision_projection": "VisionProjection",
+        "vision_language_interaction": "VisionLanguageInteraction",
+        "action_head": "TurboVLAActionHead"
+      },
+      "params": {
+        "text_encoder": {
+          "total": 109679104,
+          "trainable": 196864
+        },
+        "vision_encoder": {
+          "total": 85660416,
+          "trainable": 85659648
+        },
+        "vision_projection": {
+          "total": 1248512,
+          "trainable": 1248512
+        },
+        "vision_language_interaction": {
+          "total": 14212608,
+          "trainable": 14212608
+        },
+        "action_head": {
+          "total": 5272091,
+          "trainable": 5272091
+        }
+      },
+      "params_total": 216073243,
+      "params_trainable": 106590235,
+      "action_head_signature": "add6bc7a001db16d",
+      "config_echo": {
+        "vision.encoder_type": "dinov3",
+        "text.encoder_type": "bert",
+        "spike.downstream_type": "ann",
+        "action_head_type": "ann"
+      }
+    },
+    {
+      "arm": "A1",
+      "combination": {
+        "vision": "sdtv3_19m",
+        "text": "bert",
+        "downstream": "ann"
+      },
+      "module_classes": {
+        "text_encoder": "TurboVLATextEncoder",
+        "vision_encoder": "SDTV3VisionEncoder",
+        "vision_projection": "VisionProjection",
+        "vision_language_interaction": "VisionLanguageInteraction",
+        "action_head": "TurboVLAActionHead"
+      },
+      "params": {
+        "text_encoder": {
+          "total": 109679104,
+          "trainable": 196864
+        },
+        "vision_encoder": {
+          "total": 18626504,
+          "trainable": 18626504
+        },
+        "vision_projection": {
+          "total": 725456,
+          "trainable": 725456
+        },
+        "vision_language_interaction": {
+          "total": 14212608,
+          "trainable": 14212608
+        },
+        "action_head": {
+          "total": 5272091,
+          "trainable": 5272091
+        }
+      },
+      "params_total": 148516275,
+      "params_trainable": 39034035,
+      "action_head_signature": "add6bc7a001db16d",
+      "config_echo": {
+        "vision.encoder_type": "sdtv3_19m",
+        "text.encoder_type": "bert",
+        "spike.downstream_type": "ann",
+        "action_head_type": "ann"
+      }
+    },
+    {
+      "arm": "A2",
+      "combination": {
+        "vision": "dinov3",
+        "text": "sootspike",
+        "downstream": "ann"
+      },
+      "module_classes": {
+        "text_encoder": "TurboVLATextEncoder",
+        "vision_encoder": "DINOv3VisionEncoder",
+        "vision_projection": "VisionProjection",
+        "vision_language_interaction": "VisionLanguageInteraction",
+        "action_head": "TurboVLAActionHead"
+      },
+      "params": {
+        "text_encoder": {
+          "total": 109688320,
+          "trainable": 196864
+        },
+        "vision_encoder": {
+          "total": 85660416,
+          "trainable": 85659648
+        },
+        "vision_projection": {
+          "total": 1248512,
+          "trainable": 1248512
+        },
+        "vision_language_interaction": {
+          "total": 14212608,
+          "trainable": 14212608
+        },
+        "action_head": {
+          "total": 5272091,
+          "trainable": 5272091
+        }
+      },
+      "params_total": 216082459,
+      "params_trainable": 106590235,
+      "action_head_signature": "add6bc7a001db16d",
+      "config_echo": {
+        "vision.encoder_type": "dinov3",
+        "text.encoder_type": "sootspike",
+        "spike.downstream_type": "ann",
+        "action_head_type": "ann"
+      }
+    },
+    {
+      "arm": "A3",
+      "combination": {
+        "vision": "sdtv3_19m",
+        "text": "sootspike",
+        "downstream": "ann"
+      },
+      "module_classes": {
+        "text_encoder": "TurboVLATextEncoder",
+        "vision_encoder": "SDTV3VisionEncoder",
+        "vision_projection": "VisionProjection",
+        "vision_language_interaction": "VisionLanguageInteraction",
+        "action_head": "TurboVLAActionHead"
+      },
+      "params": {
+        "text_encoder": {
+          "total": 109688320,
+          "trainable": 196864
+        },
+        "vision_encoder": {
+          "total": 18626504,
+          "trainable": 18626504
+        },
+        "vision_projection": {
+          "total": 725456,
+          "trainable": 725456
+        },
+        "vision_language_interaction": {
+          "total": 14212608,
+          "trainable": 14212608
+        },
+        "action_head": {
+          "total": 5272091,
+          "trainable": 5272091
+        }
+      },
+      "params_total": 148525491,
+      "params_trainable": 39034035,
+      "action_head_signature": "add6bc7a001db16d",
+      "config_echo": {
+        "vision.encoder_type": "sdtv3_19m",
+        "text.encoder_type": "sootspike",
+        "spike.downstream_type": "ann",
+        "action_head_type": "ann"
+      }
+    },
+    {
+      "arm": "A4",
+      "combination": {
+        "vision": "sdtv3_19m",
+        "text": "sootspike",
+        "downstream": "spiking"
+      },
+      "module_classes": {
+        "text_encoder": "TurboVLATextEncoder",
+        "vision_encoder": "SDTV3VisionEncoder",
+        "vision_projection": "SpikeVisionProjection",
+        "vision_language_interaction": "SpikeVisionLanguageInteraction",
+        "action_head": "TurboVLAActionHead"
+      },
+      "params": {
+        "text_encoder": {
+          "total": 109688832,
+          "trainable": 197376
+        },
+        "vision_encoder": {
+          "total": 18626504,
+          "trainable": 18626504
+        },
+        "vision_projection": {
+          "total": 727296,
+          "trainable": 727296
+        },
+        "vision_language_interaction": {
+          "total": 14315592,
+          "trainable": 14315592
+        },
+        "action_head": {
+          "total": 5272091,
+          "trainable": 5272091
+        }
+      },
+      "params_total": 148630827,
+      "params_trainable": 39139371,
+      "action_head_signature": "add6bc7a001db16d",
+      "config_echo": {
+        "vision.encoder_type": "sdtv3_19m",
+        "text.encoder_type": "sootspike",
+        "spike.downstream_type": "spiking",
+        "action_head_type": "ann"
+      }
+    },
+    {
+      "arm": "TEACHER",
+      "module_classes": {
+        "text_encoder": "TurboVLATextEncoder",
+        "vision_encoder": "DINOv3VisionEncoder",
+        "vision_projection": "VisionProjection",
+        "vision_language_interaction": "VisionLanguageInteraction",
+        "action_head": "TurboVLAActionHead"
+      },
+      "params_total": 216073239,
+      "params_trainable": 0
+    }
+  ],
+  "failures": []
+}

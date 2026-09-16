@@ -1,0 +1,218 @@
+{
+  "rows": [
+    {
+      "arm": "A0",
+      "label": "A0 官方锚点 (DINOv3-B+BERT+ANN)",
+      "weight_source": "model_state_dict",
+      "perf": {
+        "per_suite": {
+          "libero_spatial": {
+            "successes": 468,
+            "episodes": 500
+          },
+          "libero_object": {
+            "successes": 494,
+            "episodes": 500
+          },
+          "libero_goal": {
+            "successes": 472,
+            "episodes": 500
+          },
+          "libero_10": {
+            "successes": 420,
+            "episodes": 500
+          }
+        },
+        "successes": 1854,
+        "episodes": 2000,
+        "success_rate": 0.927,
+        "ci95_pp": 1.1400984904822913,
+        "complete": true
+      },
+      "params_total_M": 216.073239,
+      "params_trainable_M": 0.0,
+      "macs_G": null,
+      "acs_G": null,
+      "energy_mJ": null,
+      "energy_dense_equiv_mJ": null,
+      "energy_gain_x": null,
+      "peak_MiB_b1": null,
+      "latency_ms": null,
+      "action_head_sig": null,
+      "notes": [
+        "参数取自 KD 教师(=官方架构)"
+      ]
+    },
+    {
+      "arm": "A0p",
+      "label": "A0' DINOv3-B+BERT+ANN",
+      "weight_source": "ema",
+      "perf": null,
+      "params_total_M": 216.073243,
+      "params_trainable_M": 106.590235,
+      "macs_G": 39.062226432,
+      "acs_G": 0.0,
+      "energy_mJ": 179.6862415872,
+      "energy_dense_equiv_mJ": 179.6862415872,
+      "energy_gain_x": 1.0,
+      "peak_MiB_b1": 900.7,
+      "latency_ms": 27.963,
+      "action_head_sig": "add6bc7a001db16d",
+      "notes": []
+    },
+    {
+      "arm": "A1",
+      "label": "A1 SDT-V3+BERT+ANN",
+      "weight_source": "ema",
+      "perf": null,
+      "params_total_M": 148.516275,
+      "params_trainable_M": 39.034035,
+      "macs_G": 4.600579584,
+      "acs_G": 8.433756112,
+      "energy_mJ": 28.753046587199997,
+      "energy_dense_equiv_mJ": 90.844026624,
+      "energy_gain_x": 3.159457428224008,
+      "peak_MiB_b1": 958.6,
+      "latency_ms": 39.697,
+      "action_head_sig": "add6bc7a001db16d",
+      "notes": []
+    },
+    {
+      "arm": "A2",
+      "label": "A2 DINOv3-B+sootspike+ANN",
+      "weight_source": "ema",
+      "perf": null,
+      "params_total_M": 216.082459,
+      "params_trainable_M": 106.590235,
+      "macs_G": 37.30278144,
+      "acs_G": 1.53950162,
+      "energy_mJ": 172.978346082,
+      "energy_dense_equiv_mJ": 204.56111032319998,
+      "energy_gain_x": 1.1825821841667294,
+      "peak_MiB_b1": 1234.8,
+      "latency_ms": 45.33,
+      "action_head_sig": "add6bc7a001db16d",
+      "notes": []
+    },
+    {
+      "arm": "A3",
+      "label": "A3 SDT-V3+sootspike+ANN",
+      "weight_source": "ema",
+      "perf": null,
+      "params_total_M": 148.525491,
+      "params_trainable_M": 39.034035,
+      "macs_G": 2.841134592,
+      "acs_G": 9.976853457,
+      "energy_mJ": 22.0483872345,
+      "energy_dense_equiv_mJ": 115.71889535999999,
+      "energy_gain_x": 5.248406340529522,
+      "peak_MiB_b1": 1290.3,
+      "latency_ms": 59.528,
+      "action_head_sig": "add6bc7a001db16d",
+      "notes": []
+    },
+    {
+      "arm": "A4",
+      "label": "A4 完整 v3 (SDT-V3+sootspike+spike 融合)",
+      "weight_source": "ema",
+      "perf": {
+        "per_suite": {
+          "libero_spatial": {
+            "successes": 478,
+            "episodes": 500
+          },
+          "libero_object": {
+            "successes": 490,
+            "episodes": 500
+          },
+          "libero_goal": {
+            "successes": 476,
+            "episodes": 500
+          },
+          "libero_10": {
+            "successes": 400,
+            "episodes": 500
+          }
+        },
+        "successes": 1844,
+        "episodes": 2000,
+        "success_rate": 0.922,
+        "ci95_pp": 1.175313799799866,
+        "complete": true,
+        "summary_mismatch": {
+          "summary_json": "890/1000",
+          "recomputed": "1844/2000",
+          "note": "以明细重算为准(summary.json 可能只聚合了部分 suite)"
+        }
+      },
+      "params_total_M": 148.630827,
+      "params_trainable_M": 39.139371,
+      "macs_G": 2.424598528,
+      "acs_G": 10.826865122,
+      "energy_mJ": 20.8973318386,
+      "energy_dense_equiv_mJ": 159.869392128,
+      "energy_gain_x": 7.650229864881656,
+      "peak_MiB_b1": 679.1,
+      "latency_ms": 150.982,
+      "action_head_sig": "add6bc7a001db16d",
+      "notes": [
+        "summary.json 与明细不一致:{'summary_json': '890/1000', 'recomputed': '1844/2000', 'note': '以明细重算为准(summary.json 可能只聚合了部分 suite)'}"
+      ]
+    },
+    {
+      "arm": "A4-raw",
+      "label": "A4 (raw 口径,补充)",
+      "weight_source": "raw",
+      "perf": {
+        "per_suite": {
+          "libero_spatial": {
+            "successes": 391,
+            "episodes": 500
+          },
+          "libero_object": {
+            "successes": 496,
+            "episodes": 500
+          },
+          "libero_goal": {
+            "successes": 404,
+            "episodes": 500
+          },
+          "libero_10": {
+            "successes": 338,
+            "episodes": 500
+          }
+        },
+        "successes": 1629,
+        "episodes": 2000,
+        "success_rate": 0.8145,
+        "ci95_pp": 1.7035644742715197,
+        "complete": true
+      },
+      "params_total_M": 148.630827,
+      "params_trainable_M": 39.139371,
+      "macs_G": 2.424598528,
+      "acs_G": 10.826865122,
+      "energy_mJ": 20.8973318386,
+      "energy_dense_equiv_mJ": 159.869392128,
+      "energy_gain_x": 7.650229864881656,
+      "peak_MiB_b1": 679.1,
+      "latency_ms": 150.982,
+      "action_head_sig": "add6bc7a001db16d",
+      "notes": []
+    }
+  ],
+  "checks": [
+    [
+      "ACT 结构签名一致(✅)",
+      "1 种: ['add6bc7a001db16d']"
+    ],
+    [
+      "A0 ⚠️",
+      "参数取自 KD 教师(=官方架构)"
+    ],
+    [
+      "A4 ⚠️",
+      "summary.json 与明细不一致:{'summary_json': '890/1000', 'recomputed': '1844/2000', 'note': '以明细重算为准(summary.json 可能只聚合了部分 suite)'}"
+    ]
+  ]
+}

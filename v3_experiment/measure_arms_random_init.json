@@ -1,0 +1,557 @@
+{
+  "reports": [
+    {
+      "arm": "A0p",
+      "combination": {
+        "vision": "dinov3",
+        "text": "bert",
+        "downstream": "ann"
+      },
+      "init": "random-init",
+      "batches": {
+        "1": {
+          "peak_alloc_MiB": 900.7,
+          "peak_reserved_MiB": 984.0,
+          "action_shape": [
+            1,
+            12,
+            7
+          ],
+          "macs": 39062226432.0,
+          "acs": 0.0,
+          "acs_binary": 0.0,
+          "macs_dense_equiv": 39062226432.0,
+          "energy_mJ_weighted": 179.6862415872,
+          "energy_mJ_binary": 179.6862415872,
+          "energy_mJ_dense_equiv": 179.6862415872,
+          "energy_gain_x": 1.0,
+          "per_module": {
+            "text_encoder": {
+              "macs": 1788346368.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 74.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 1788346368.0
+            },
+            "vision_encoder": {
+              "macs": 34374942720.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 146.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 34374942720.0
+            },
+            "vision_projection": {
+              "macs": 488112128.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 3.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 488112128.0
+            },
+            "vision_language_interaction": {
+              "macs": 2200278528.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 84.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 2200278528.0
+            },
+            "action_head": {
+              "macs": 210546688.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 20.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 210546688.0
+            }
+          }
+        },
+        "16": {
+          "peak_alloc_MiB": 1103.2,
+          "peak_reserved_MiB": 1264.0,
+          "action_shape": [
+            16,
+            12,
+            7
+          ],
+          "macs": 624995622912.0,
+          "acs": 0.0,
+          "acs_binary": 0.0,
+          "macs_dense_equiv": 624995622912.0,
+          "energy_mJ_weighted": 2874.9798653952,
+          "energy_mJ_binary": 2874.9798653952,
+          "energy_mJ_dense_equiv": 2874.9798653952,
+          "energy_gain_x": 1.0,
+          "per_module": {
+            "text_encoder": {
+              "macs": 28613541888.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 74.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 28613541888.0
+            },
+            "vision_encoder": {
+              "macs": 549999083520.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 146.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 549999083520.0
+            },
+            "vision_projection": {
+              "macs": 7809794048.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 3.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 7809794048.0
+            },
+            "vision_language_interaction": {
+              "macs": 35204456448.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 84.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 35204456448.0
+            },
+            "action_head": {
+              "macs": 3368747008.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 20.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 3368747008.0
+            }
+          }
+        }
+      },
+      "energy": {},
+      "latency": {
+        "batch": 1,
+        "median_ms": 27.963,
+        "p90_ms": 28.619,
+        "min_ms": 27.508,
+        "iters": 10,
+        "note": "含 tokenize;GPU 上 dense 模拟,≠ 脉冲硬件延迟"
+      }
+    },
+    {
+      "arm": "A1",
+      "combination": {
+        "vision": "sdtv3_19m",
+        "text": "bert",
+        "downstream": "ann"
+      },
+      "init": "random-init",
+      "batches": {
+        "1": {
+          "peak_alloc_MiB": 958.6,
+          "peak_reserved_MiB": 1014.0,
+          "action_shape": [
+            1,
+            12,
+            7
+          ],
+          "macs": 4600579584.0,
+          "acs": 8433756112.0,
+          "acs_binary": 16788742524.0,
+          "macs_dense_equiv": 19748701440.0,
+          "energy_mJ_weighted": 28.753046587199997,
+          "energy_mJ_binary": 36.272534358,
+          "energy_mJ_dense_equiv": 90.844026624,
+          "energy_gain_x": 3.159457428224008,
+          "per_module": {
+            "text_encoder": {
+              "macs": 1788346368.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 74.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 1788346368.0
+            },
+            "vision_encoder": {
+              "macs": 118013952.0,
+              "acs": 8433756112.0,
+              "acs_binary": 16788742524.0,
+              "ops": 226.0,
+              "spike_ops": 224.0,
+              "macs_dense_equiv": 15266135808.0
+            },
+            "vision_projection": {
+              "macs": 283394048.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 3.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 283394048.0
+            },
+            "vision_language_interaction": {
+              "macs": 2200278528.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 84.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 2200278528.0
+            },
+            "action_head": {
+              "macs": 210546688.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 20.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 210546688.0
+            }
+          }
+        },
+        "16": {
+          "peak_alloc_MiB": 1342.0,
+          "peak_reserved_MiB": 1886.0,
+          "action_shape": [
+            16,
+            12,
+            7
+          ],
+          "macs": 73609273344.0,
+          "acs": 134835959787.0,
+          "acs_binary": 268556869176.0,
+          "macs_dense_equiv": 315979223040.0,
+          "energy_mJ_weighted": 459.95502119069994,
+          "energy_mJ_binary": 580.3038396407999,
+          "energy_mJ_dense_equiv": 1453.504425984,
+          "energy_gain_x": 3.1601012251616853,
+          "per_module": {
+            "text_encoder": {
+              "macs": 28613541888.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 74.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 28613541888.0
+            },
+            "vision_encoder": {
+              "macs": 1888223232.0,
+              "acs": 134835959787.0,
+              "acs_binary": 268556869176.0,
+              "ops": 226.0,
+              "spike_ops": 224.0,
+              "macs_dense_equiv": 244258172928.0
+            },
+            "vision_projection": {
+              "macs": 4534304768.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 3.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 4534304768.0
+            },
+            "vision_language_interaction": {
+              "macs": 35204456448.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 84.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 35204456448.0
+            },
+            "action_head": {
+              "macs": 3368747008.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 20.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 3368747008.0
+            }
+          }
+        }
+      },
+      "energy": {},
+      "latency": {
+        "batch": 1,
+        "median_ms": 39.697,
+        "p90_ms": 40.215,
+        "min_ms": 38.556,
+        "iters": 10,
+        "note": "含 tokenize;GPU 上 dense 模拟,≠ 脉冲硬件延迟"
+      }
+    },
+    {
+      "arm": "A2",
+      "combination": {
+        "vision": "dinov3",
+        "text": "sootspike",
+        "downstream": "ann"
+      },
+      "init": "random-init",
+      "batches": {
+        "1": {
+          "peak_alloc_MiB": 1234.8,
+          "peak_reserved_MiB": 1354.0,
+          "action_shape": [
+            1,
+            12,
+            7
+          ],
+          "macs": 37302781440.0,
+          "acs": 1539501620.0,
+          "acs_binary": 1539501620.0,
+          "macs_dense_equiv": 44469806592.0,
+          "energy_mJ_weighted": 172.978346082,
+          "energy_mJ_binary": 172.978346082,
+          "energy_mJ_dense_equiv": 204.56111032319998,
+          "energy_gain_x": 1.1825821841667294,
+          "per_module": {
+            "text_encoder": {
+              "macs": 28901376.0,
+              "acs": 1539501620.0,
+              "acs_binary": 1539501620.0,
+              "ops": 99.0,
+              "spike_ops": 96.0,
+              "macs_dense_equiv": 7195926528.0
+            },
+            "vision_encoder": {
+              "macs": 34374942720.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 146.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 34374942720.0
+            },
+            "vision_projection": {
+              "macs": 488112128.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 3.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 488112128.0
+            },
+            "vision_language_interaction": {
+              "macs": 2200278528.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 84.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 2200278528.0
+            },
+            "action_head": {
+              "macs": 210546688.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 20.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 210546688.0
+            }
+          }
+        },
+        "16": {
+          "peak_alloc_MiB": 1548.7,
+          "peak_reserved_MiB": 1774.0,
+          "action_shape": [
+            16,
+            12,
+            7
+          ],
+          "macs": 596844503040.0,
+          "acs": 24632025920.0,
+          "acs_binary": 24632025920.0,
+          "macs_dense_equiv": 711516905472.0,
+          "energy_mJ_weighted": 2767.653537312,
+          "energy_mJ_binary": 2767.653537312,
+          "energy_mJ_dense_equiv": 3272.9777651711997,
+          "energy_gain_x": 1.1825821841667294,
+          "per_module": {
+            "text_encoder": {
+              "macs": 462422016.0,
+              "acs": 24632025920.0,
+              "acs_binary": 24632025920.0,
+              "ops": 99.0,
+              "spike_ops": 96.0,
+              "macs_dense_equiv": 115134824448.0
+            },
+            "vision_encoder": {
+              "macs": 549999083520.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 146.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 549999083520.0
+            },
+            "vision_projection": {
+              "macs": 7809794048.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 3.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 7809794048.0
+            },
+            "vision_language_interaction": {
+              "macs": 35204456448.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 84.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 35204456448.0
+            },
+            "action_head": {
+              "macs": 3368747008.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 20.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 3368747008.0
+            }
+          }
+        }
+      },
+      "energy": {},
+      "latency": {
+        "batch": 1,
+        "median_ms": 45.33,
+        "p90_ms": 45.897,
+        "min_ms": 44.987,
+        "iters": 10,
+        "note": "含 tokenize;GPU 上 dense 模拟,≠ 脉冲硬件延迟"
+      }
+    },
+    {
+      "arm": "A3",
+      "combination": {
+        "vision": "sdtv3_19m",
+        "text": "sootspike",
+        "downstream": "ann"
+      },
+      "init": "random-init",
+      "batches": {
+        "1": {
+          "peak_alloc_MiB": 1290.3,
+          "peak_reserved_MiB": 1386.0,
+          "action_shape": [
+            1,
+            12,
+            7
+          ],
+          "macs": 2841134592.0,
+          "acs": 9976853457.0,
+          "acs_binary": 18333143732.0,
+          "macs_dense_equiv": 25156281600.0,
+          "energy_mJ_weighted": 22.0483872345,
+          "energy_mJ_binary": 29.569048482,
+          "energy_mJ_dense_equiv": 115.71889535999999,
+          "energy_gain_x": 5.248406340529522,
+          "per_module": {
+            "text_encoder": {
+              "macs": 28901376.0,
+              "acs": 1539501620.0,
+              "acs_binary": 1539501620.0,
+              "ops": 99.0,
+              "spike_ops": 96.0,
+              "macs_dense_equiv": 7195926528.0
+            },
+            "vision_encoder": {
+              "macs": 118013952.0,
+              "acs": 8437351837.0,
+              "acs_binary": 16793642112.0,
+              "ops": 226.0,
+              "spike_ops": 224.0,
+              "macs_dense_equiv": 15266135808.0
+            },
+            "vision_projection": {
+              "macs": 283394048.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 3.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 283394048.0
+            },
+            "vision_language_interaction": {
+              "macs": 2200278528.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 84.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 2200278528.0
+            },
+            "action_head": {
+              "macs": 210546688.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 20.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 210546688.0
+            }
+          }
+        },
+        "16": {
+          "peak_alloc_MiB": 1786.9,
+          "peak_reserved_MiB": 2392.0,
+          "action_shape": [
+            16,
+            12,
+            7
+          ],
+          "macs": 45458153472.0,
+          "acs": 159449774909.0,
+          "acs_binary": 293083263304.0,
+          "macs_dense_equiv": 402500505600.0,
+          "energy_mJ_weighted": 352.6123033893,
+          "energy_mJ_binary": 472.8824429448,
+          "energy_mJ_dense_equiv": 1851.5023257599998,
+          "energy_gain_x": 5.250816003762232,
+          "per_module": {
+            "text_encoder": {
+              "macs": 462422016.0,
+              "acs": 24632025920.0,
+              "acs_binary": 24632025920.0,
+              "ops": 99.0,
+              "spike_ops": 96.0,
+              "macs_dense_equiv": 115134824448.0
+            },
+            "vision_encoder": {
+              "macs": 1888223232.0,
+              "acs": 134817748989.0,
+              "acs_binary": 268451237384.0,
+              "ops": 226.0,
+              "spike_ops": 224.0,
+              "macs_dense_equiv": 244258172928.0
+            },
+            "vision_projection": {
+              "macs": 4534304768.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 3.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 4534304768.0
+            },
+            "vision_language_interaction": {
+              "macs": 35204456448.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 84.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 35204456448.0
+            },
+            "action_head": {
+              "macs": 3368747008.0,
+              "acs": 0.0,
+              "acs_binary": 0.0,
+              "ops": 20.0,
+              "spike_ops": 0.0,
+              "macs_dense_equiv": 3368747008.0
+            }
+          }
+        }
+      },
+      "energy": {},
+      "latency": {
+        "batch": 1,
+        "median_ms": 59.528,
+        "p90_ms": 64.539,
+        "min_ms": 57.174,
+        "iters": 10,
+        "note": "含 tokenize;GPU 上 dense 模拟,≠ 脉冲硬件延迟"
+      }
+    }
+  ],
+  "failures": []
+}

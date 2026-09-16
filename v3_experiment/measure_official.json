@@ -1,0 +1,68 @@
+{
+  "model": "official TurboVLA LIBERO ckpt",
+  "image_size": 256,
+  "num_views": 2,
+  "params_total_M": 216.073239,
+  "params_per_module_M": {
+    "text_encoder": 109.679104,
+    "vision_encoder": 85.660416,
+    "vision_projection": 1.248512,
+    "vision_language_interaction": 14.212608,
+    "action_head": 5.272087
+  },
+  "macs_G": 50.134451712,
+  "acs_G": 0.0,
+  "flops_G": 100.268903424,
+  "dense_equiv_G": 100.268903424,
+  "energy_mJ": 230.61847787519997,
+  "peak_alloc_MiB": 904.5,
+  "peak_reserved_MiB": 990.0,
+  "latency_median_ms": 28.29,
+  "per_module": {
+    "text_encoder": {
+      "macs": 1788346368.0,
+      "acs": 0.0,
+      "acs_binary": 0.0,
+      "ops": 74.0,
+      "spike_ops": 0.0,
+      "macs_dense_equiv": 1788346368.0
+    },
+    "vision_encoder": {
+      "macs": 44637880320.0,
+      "acs": 0.0,
+      "acs_binary": 0.0,
+      "ops": 146.0,
+      "spike_ops": 0.0,
+      "macs_dense_equiv": 44637880320.0
+    },
+    "vision_projection": {
+      "macs": 637534208.0,
+      "acs": 0.0,
+      "acs_binary": 0.0,
+      "ops": 3.0,
+      "spike_ops": 0.0,
+      "macs_dense_equiv": 637534208.0
+    },
+    "vision_language_interaction": {
+      "macs": 2812958208.0,
+      "acs": 0.0,
+      "acs_binary": 0.0,
+      "ops": 84.0,
+      "spike_ops": 0.0,
+      "macs_dense_equiv": 2812958208.0
+    },
+    "action_head": {
+      "macs": 257732608.0,
+      "acs": 0.0,
+      "acs_binary": 0.0,
+      "ops": 20.0,
+      "spike_ops": 0.0,
+      "macs_dense_equiv": 257732608.0
+    }
+  },
+  "action_shape": [
+    1,
+    12,
+    7
+  ]
+}
