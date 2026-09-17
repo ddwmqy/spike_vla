@@ -22,6 +22,19 @@ IFS=',' read -r -a GPUS <<< "$GPUS_STR"
 (( ${#ARMS[@]} == ${#GPUS[@]} )) || { echo "!!! ARMS 与 GPUS 数量不一致"; exit 1; }
 test -x "$EVAL" || { echo "!!! 缺 $EVAL"; exit 1; }
 
+# ★ 图形库必须在**四臂启动之前**装一次:cv2 要 libGL.so.1、MuJoCo EGL 要 libEGL.so.1。
+#   若只在各臂脚本里装,四条臂会同时检查+apt,先跑的那个在库到位前就开始跑 suite →
+#   撞 `AttributeError: 'NoneType' object has no attribute 'eglQueryString'`
+#   (2026-09-17 实测:a1 的 libero_spatial 因此失败,其余三臂碰巧躲过)
+if ! ldconfig -p 2>/dev/null | grep -q "libGL.so.1" || ! ldconfig -p 2>/dev/null | grep -q "libEGL.so.1"; then
+  echo "[INFO] 装图形库(libgl1/libglib2.0-0/libegl1/libglx-mesa0,限时 180s)"
+  timeout 180 bash -c 'apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libgl1 libglib2.0-0 libegl1 libglx-mesa0' || \
+    echo "[WARN] apt 安装失败/超时"
+fi
+ldconfig -p 2>/dev/null | grep -q "libGL.so.1"  && echo "  libGL ✓"  || echo "  libGL ✗"
+ldconfig -p 2>/dev/null | grep -q "libEGL.so.1" && echo "  libEGL ✓" || echo "  libEGL ✗"
+
+
 gen="$BASE/miniconda3/envs/turbovla/bin/python"
 TS=$(date +%Y%m%d_%H%M%S)
 LOGDIR="$PKG/output/eval/parallel_$TS"
