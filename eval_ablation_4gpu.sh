@@ -36,11 +36,16 @@ echo "====================================================="
 # 先确认每个臂的 ckpt 都在,避免跑一半才发现缺
 missing=0
 for arm in "${ARMS[@]}"; do
-  if ! DRY_RUN=1 bash "$EVAL" "$arm" 2>/dev/null | grep -q "ckpt exists *yes"; then
-    echo "!!! 缺 ckpt: $arm(先确认训练已完成)"; missing=1
-  fi
+  # ★ 不能用 `bash ... | grep -q`:grep -q 命中即退出会给上游 SIGPIPE,
+  #   在 pipefail 下整条管道判失败 → 明明 ckpt 在也报"缺"(且时通时不通)。
+  #   2026-09-17 实际踩到:评测任务启动 45 秒即 exit 1。改成先捕获再判断。
+  dry_out=$(DRY_RUN=1 bash "$EVAL" "$arm" 2>&1) || true
+  case "$dry_out" in
+    *"ckpt exists"*yes*) : ;;
+    *) echo "!!! 缺 ckpt: $arm(先确认训练已完成)"; missing=1 ;;
+  esac
 done
-(( missing == 0 )) || exit 1
+if [ "$missing" != "0" ]; then exit 1; fi
 
 PIDS=(); NAMES=()
 for i in "${!ARMS[@]}"; do

@@ -135,7 +135,8 @@ declare -A PREFIX=(
 )
 for arm in "${ARMS[@]}"; do
   log="$LOGDIR/$arm.log"
-  last=$(tr '\r' '\n' < "$log" 2>/dev/null | grep -oE "loss=[0-9.]+.*gacc=[0-9.]+" | tail -1)
+  # tail/head 提前退出会给上游 SIGPIPE → pipefail 下整条判失败(训练已成功也会被标失败)
+  last=$(tr '\r' '\n' < "$log" 2>/dev/null | grep -oE "loss=[0-9.]+.*gacc=[0-9.]+" | tail -1 || true)
   pfx="${PREFIX[$arm]:-}"
   nck=$(ls "$PKG/output/ablation/checkpoints/" 2>/dev/null | grep -c "^${pfx}_" || true)
   nsave=$(grep -c "^saved:" "$log" 2>/dev/null || true)

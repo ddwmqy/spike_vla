@@ -111,6 +111,28 @@ test -d "$BERT_PATH"   || { echo "!!! 找不到文本目录: $BERT_PATH"; exit 1
 
 export EVAL_GPU_IDS="${EVAL_GPU_IDS:-0,1,2,3}"
 export EVAL_SUITES="${EVAL_SUITES:-libero_spatial,libero_object,libero_goal,libero_10}"
+# ★ git 的 dubious ownership:/data 上的仓库属主是 UID 11192,容器里是别的用户 →
+#   run_eval.sh 里的 `git -C $LIBERO_CHECKOUT rev-parse HEAD` 会 exit 128
+#   (2026-09-17 实测:四臂评测全部启动即挂)。eval_v3.sh 里有这行,我之前漏了。
+for d in "$LIBERO_LOCAL" "$PKG" "$PKG/code"; do
+  git config --global --add safe.directory "$d" 2>/dev/null || true
+done
+# ★ 图形库:cv2 要 libGL.so.1、MuJoCo 的 EGL 后端要 libEGL.so.1 —— 容器(尤其新拉起的)
+#   两个通常都没有。eval_v3.sh 用 apt 解决,这里照抄那一套(经 v3 2000 局评测验证过);
+#   apt 不通的集群(如 5090)才退回共享卷的 glvnd(只兜底 libGL,不遮蔽系统库)。
+need_gl=0
+ldconfig -p 2>/dev/null | grep -q "libGL.so.1"  || need_gl=1
+ldconfig -p 2>/dev/null | grep -q "libEGL.so.1" || need_gl=1
+if [ "$need_gl" = "1" ]; then
+  echo "[INFO] 缺 libGL/libEGL → apt 安装(限时 120s)"
+  timeout 120 bash -c 'apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libgl1 libglib2.0-0 libegl1 libglx-mesa0' || \
+    echo "[WARN] apt 安装失败/超时(某些集群 apt 不通)"
+fi
+SYSLIBS=$BASE/v4_assets/syslibs
+if ! ldconfig -p 2>/dev/null | grep -q "libGL.so.1" && [ -e "$SYSLIBS/libGL.so.1" ]; then
+  export LD_LIBRARY_PATH="$SYSLIBS${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+  echo "[WARN] 系统无 libGL,退回共享卷: $SYSLIBS(注意:卷上没有 libEGL)"
+fi
 export LIBERO_CHECKOUT=$LIBERO_LOCAL
 export PYTHON_BIN=$PY
 export REPO_DIR=$RES

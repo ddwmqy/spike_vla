@@ -57,6 +57,12 @@ bash /data/260010028/dwh_vla/launch_ablation.sh a1                  # 单臂(旧
 bash /data/260010028/dwh_vla/launch_ablation.sh dry:a1              # 单臂只看命令
 ```
 
+**★ 别用 `cmd | grep -q` 做判断（2026-09-17 实测踩到，评测任务启动 45 秒即 exit 1）**：
+`grep -q` 命中即退出 → 上游若还在写就吃 SIGPIPE → 在 `set -o pipefail` 下**整条管道判失败** → 明明
+ckpt 存在也报"缺"，且**时通时不通**（取决于时序）。同理 `... | tail -1` / `head -n` 也会 SIGPIPE 上游，
+出现在脚本末尾汇总时会**把已成功的任务标成失败**。正确写法：先捕获再判断
+（`out=$(cmd 2>&1) || true; case "$out" in ...;; esac`），或给管道加 `|| true`。
+
 **★ TMPDIR 必须短（2026-09-16 实测踩到，四臂全崩）**：Python multiprocessing 的 AF_UNIX
 socket 路径上限 **107 字符**。最初把每臂 TMPDIR 设成 `$PKG/output/ablation/tmp_<arm>`
 （79 字符）→ `+ socket 名 ≈ 109` → 在 `resource_sharer.DupFd` 上崩

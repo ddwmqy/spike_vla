@@ -124,7 +124,7 @@ EOF
       sleep 2
     done
     wait $PID; RC=$?
-    SPIT=$(grep -oE '[0-9.]+s/it' "$OUTPUT_ROOT/probe_${ARM}_b$B.log" | tail -1)
+    SPIT=$(grep -oE '[0-9.]+s/it' "$OUTPUT_ROOT/probe_${ARM}_b$B.log" 2>/dev/null | tail -1 || true)
     OK="✓"
     { [ "$RC" = "0" ] && [ "${PEAK:-0}" -le "$LIMIT_MIB" ]; } 2>/dev/null || OK="✗"
     echo "  arm=$ARM batch=$B rc=$RC peak=${PEAK}MiB$([ "$OK" = "✗" ] && echo '(超上限/失败)') speed=${SPIT:-n/a} log=$OUTPUT_ROOT/probe_${ARM}_b$B.log"
